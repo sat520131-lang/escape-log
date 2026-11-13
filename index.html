@@ -189,10 +189,10 @@ body.reg-open .topbar,body.reg-open .bottomnav{display:none}
   position:sticky;top:0;z-index:20;
   background:color-mix(in srgb,var(--bg) 92%,transparent);
   backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
-  height:56px;margin:0;padding:4px 0 12px;
+  height:68px;margin:0;padding:4px 0 10px;
 }
 #history>.toolbar,#wishlist>.toolbar{
-  position:sticky;top:56px;z-index:19;
+  position:sticky;top:68px;z-index:19;
   background:color-mix(in srgb,var(--bg) 92%,transparent);
   backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
   margin:0 0 10px;padding:2px 0 12px;
@@ -267,11 +267,11 @@ body.reg-open .topbar,body.reg-open .bottomnav{display:none}
 
 /* Dashboard (Home) */
 #dashboard.active{
-  display:flex;flex-direction:column;gap:14px;
-  height:calc(100dvh - 156px - var(--safe-t) - var(--safe-b));
+  display:flex;flex-direction:column;gap:12px;
+  height:calc(100dvh - 142px - var(--safe-t) - var(--safe-b));
   min-height:400px;max-height:800px;
 }
-#dashboard>.heading{flex:none;height:36px;margin:0}
+#dashboard>.heading{flex:none;height:auto;min-height:46px;margin:0}
 #dashboard>.heading .sub{display:none}
 
 .stats{
@@ -846,7 +846,7 @@ html[data-theme="terminal"] .pill.wanted,html[data-theme="midnight"] .pill.wante
 /* Bottom Navigation (Floating Capsule) */
 .bottomnav{
   position:fixed;z-index:40;left:50%;
-  bottom:calc(12px + var(--safe-b));
+  bottom:calc(5px + var(--safe-b));
   transform:translateX(-50%);
   width:min(520px,calc(100% - 24px));
   display:flex;gap:4px;padding:5px;
@@ -984,10 +984,10 @@ html[data-theme="terminal"] .pill.wanted,html[data-theme="midnight"] .pill.wante
 .dialog .btn{flex:1}
 
 .toast{
-  position:fixed;left:50%;bottom:calc(84px + var(--safe-b));
+  position:fixed;left:50%;bottom:calc(78px + var(--safe-b));
   transform:translate(-50%,8px);z-index:80;
   background:var(--ink);color:var(--bg);
-  padding:11px 20px;border-radius:99px;
+  padding:11px 18px;border-radius:14px;
   font-size:13px;font-weight:700;opacity:0;pointer-events:none;
   transition:.22s;max-width:calc(100% - 32px);text-align:center;
   box-shadow:var(--shadow-lg);
@@ -1022,8 +1022,8 @@ html[data-theme="terminal"] .pill.wanted,html[data-theme="midnight"] .pill.wante
   .thumb{width:70px;height:70px}
 }
 @media(max-height:720px){
-  #dashboard.active{gap:10px}
-  #dashboard>.heading{height:30px}
+  #dashboard.active{gap:8px}
+  #dashboard>.heading{height:auto;min-height:40px}
   #dashboard .stat{padding:12px 15px}
   #dashboard .stat-num{margin-top:4px;font-size:30px}
   #dashboard .stat-foot{display:none}
@@ -1071,6 +1071,7 @@ html[data-theme="terminal"] .pill.wanted,html[data-theme="midnight"] .pill.wante
   <section class="page active" id="dashboard">
     <div class="heading">
       <div>
+        <div class="eyebrow">ESCAPE LOG OVERVIEW</div>
         <h1><span class="h-ico"><svg class="ic" aria-hidden="true"><use href="#i-home"/></svg></span>ホーム</h1>
         <div class="sub">これまでの挑戦を、ひと目で。</div>
       </div>
@@ -1109,7 +1110,10 @@ html[data-theme="terminal"] .pill.wanted,html[data-theme="midnight"] .pill.wante
   <!-- HISTORY -->
   <section class="page" id="history">
     <div class="heading">
-      <div><h1><span class="h-ico"><svg class="ic" aria-hidden="true"><use href="#i-ticket"/></svg></span>行ってきた公演</h1></div>
+      <div>
+        <div class="eyebrow">PLAYED ARCHIVE</div>
+        <h1><span class="h-ico"><svg class="ic" aria-hidden="true"><use href="#i-ticket"/></svg></span>行ってきた公演</h1>
+      </div>
       <button class="btn add-compact" onclick="newRecord()">＋ 追加</button>
     </div>
     <div class="toolbar">
@@ -1161,7 +1165,10 @@ html[data-theme="terminal"] .pill.wanted,html[data-theme="midnight"] .pill.wante
   <!-- WISHLIST -->
   <section class="page" id="wishlist">
     <div class="heading">
-      <div><h1><span class="h-ico"><svg class="ic" aria-hidden="true"><use href="#i-star"/></svg></span>行きたい公演</h1></div>
+      <div>
+        <div class="eyebrow">UPCOMING &amp; WANTED</div>
+        <h1><span class="h-ico"><svg class="ic" aria-hidden="true"><use href="#i-star"/></svg></span>行きたい公演</h1>
+      </div>
       <button class="btn add-compact" onclick="openWishModal()">＋ 追加</button>
     </div>
     <div class="toolbar">
@@ -1174,7 +1181,10 @@ html[data-theme="terminal"] .pill.wanted,html[data-theme="midnight"] .pill.wante
   <!-- STATS -->
   <section class="page" id="stats">
     <div class="heading">
-      <div><h1><span class="h-ico"><svg class="ic" aria-hidden="true"><use href="#i-chart"/></svg></span>統計</h1></div>
+      <div>
+        <div class="eyebrow">PLAY ANALYTICS</div>
+        <h1><span class="h-ico"><svg class="ic" aria-hidden="true"><use href="#i-chart"/></svg></span>統計</h1>
+      </div>
     </div>
     <div id="statsContent" class="stats-page-content"></div>
   </section>
@@ -1182,7 +1192,10 @@ html[data-theme="terminal"] .pill.wanted,html[data-theme="midnight"] .pill.wante
   <!-- SETTINGS -->
   <section class="page" id="settings">
     <div class="heading">
-      <div><h1><span class="h-ico"><svg class="ic" aria-hidden="true"><use href="#i-sliders"/></svg></span>設定</h1></div>
+      <div>
+        <div class="eyebrow">PREFERENCES &amp; DATA</div>
+        <h1><span class="h-ico"><svg class="ic" aria-hidden="true"><use href="#i-sliders"/></svg></span>設定</h1>
+      </div>
     </div>
     <div class="master-grid">
       <section class="master-box theme-box">
@@ -1377,7 +1390,7 @@ function askDialog(o){return new Promise(res=>{const bk=$('dialogBack'),ok=$('dl
 const askConfirm=(m,ok='削除する',danger=true)=>askDialog({message:m,okLabel:ok,danger});
 const askText=(m,ph='')=>askDialog({message:m,input:true,placeholder:ph,okLabel:'追加'});
 let storageWarned=false;let idbTimer=null;
-function flushDB(){clearTimeout(idbTimer);idbTimer=null;if(!window.__IDB)return Promise.resolve();return window.idbPut('db',db).catch(()=>{toast('保存に失敗しました。端末の空き容量を確認してください')})}
+function flushDB(){clearTimeout(idbTimer);idbTimer=null;if(!window.__IDB)return Promise.resolve();return window.idbPut('db',db).catch(err=>{if(err&&err.name==='AbortError')return;toast('保存に失敗しました。端末の空き容量を確認してください')})}
 window.addEventListener('pagehide',()=>{flushDB()});document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')flushDB()});
 function saveDB(){setTimeout(ensureThumbs,400);if(window.__IDB){clearTimeout(idbTimer);idbTimer=setTimeout(flushDB,150);return true}try{localStorage.setItem(KEY,JSON.stringify(db));return true}catch(e){if(e&&(e.name==='QuotaExceededError'||e.code===22||e.code===1014)){toast('保存容量を超えました。写真を圧縮するか減らしてください。');return false}if(!storageWarned){storageWarned=true;toast('この環境では端末に保存できません。閉じるとデータが消えます')}return true}}
 function toast(msg){const el=$('toast');el.textContent=msg;el.classList.add('show');clearTimeout(toast.timer);toast.timer=setTimeout(()=>el.classList.remove('show'),2300)}
@@ -1482,10 +1495,11 @@ const X_DEFAULT_TPL='「{title}」に参加しました！\n{date} {organizer}\n
 function getXTpl(){try{return localStorage.getItem('escapeLogXTpl')||X_DEFAULT_TPL}catch(e){return X_DEFAULT_TPL}}
 function getXTags(){try{return localStorage.getItem('escapeLogXTags')||''}catch(e){return ''}}
 function fillTpl(tpl,x){const res=x.result==='success'?'脱出成功':x.result==='fail'?'脱出失敗':x.result==='done'?'完了':'',val={title:x.title||'',date:x.date?String(x.date).replace(/-/g,'/'):'',time:x.time||'',organizer:x.organizer||'',venue:x.venue||'',type:x.eventType||'',result:res,companions:sortJa([...(x.companions||[]),...(x.oneOffCompanions||[])]).join('、'),comment:String(x.comment||'').trim()};return String(tpl).split('\n').map(l=>{let drop=false;const o=l.replace(/\{(\w+)\}/g,(m,k)=>{if(!(k in val))return m;if(!val[k])drop=true;return val[k]});return drop?null:o.trim()}).filter(l=>l!==null&&l!=='').join('\n')}
-function xPostUrl(x){const own=tagsOf(x.hashtags),tags=own.length?own:tagsOf(getXTags());return 'https://x.com/intent/post?text='+encodeURIComponent(fillTpl(getXTpl(),x))+(tags.length?'&hashtags='+encodeURIComponent(tags.join(',')):'')}
+function buildXText(tpl,x,tags){const body=fillTpl(tpl,x);if(!tags||!tags.length)return body;const tagLine=tags.map(t=>'#'+t).join(' ');return body?body+'\n'+tagLine:tagLine}
+function xPostUrl(x){const own=tagsOf(x.hashtags),tags=own.length?own:tagsOf(getXTags());return 'https://x.com/intent/post?text='+encodeURIComponent(buildXText(getXTpl(),x,tags))}
 function saveXSettings(){try{localStorage.setItem('escapeLogXTpl',$('xTemplate').value);localStorage.setItem('escapeLogXTags',$('xDefaultTags').value.trim())}catch(e){}updateXPreview()}
 function resetXTemplate(){$('xTemplate').value=X_DEFAULT_TPL;saveXSettings()}
-function updateXPreview(){const x=db.records[0]||{title:'公演タイトル',date:'2026-11-16',organizer:'主催団体',venue:'会場',eventType:'脱出ゲーム',result:'success'};$('xPreview').textContent=fillTpl($('xTemplate').value||X_DEFAULT_TPL,x)}
+function updateXPreview(){const x=db.records[0]||{title:'公演タイトル',date:'2026-11-16',organizer:'主催団体',venue:'会場',eventType:'脱出ゲーム',result:'success'};const own=tagsOf(x.hashtags),tags=own.length?own:tagsOf($('xDefaultTags').value);$('xPreview').textContent=buildXText($('xTemplate').value||X_DEFAULT_TPL,x,tags)}
 function initXSettings(){$('xTemplate').value=getXTpl();$('xDefaultTags').value=getXTags();updateXPreview()}
 async function clearAllData(){const msg=`参加記録${db.records.length}件、行きたい公演${db.wishes.length}件、団体${db.organizers.length}件、会場${db.venues.length}件、同行者${db.companions.length}件の登録をすべて削除します。\nこの操作は元に戻せません。\nCSVまたはバックアップ（JSON）の保存は済んでいますか？`;if(!await askConfirm(msg,'次へ'))return;if(!await askConfirm('最終確認です。すべての登録データを削除します。よろしいですか？','すべて削除'))return;db=blankDB();saveDB();await flushDB();try{localStorage.removeItem(KEY)}catch(e){}location.reload()}
 function exportBackup(){const stamp=new Date().toLocaleDateString('sv-SE').replace(/-/g,''),blob=new Blob([JSON.stringify({app:'escape-log',version:1,exportedAt:new Date().toISOString(),data:db})],{type:'application/json'}),a=document.createElement('a'),u=URL.createObjectURL(blob);a.href=u;a.download='escape-log-backup-'+stamp+'.json';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),3000);toast('バックアップ（写真つき）を書き出しました')}
