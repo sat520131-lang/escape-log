@@ -161,10 +161,10 @@ button{cursor:pointer}
   height:calc(58px + var(--safe-t));
   padding:var(--safe-t) max(18px,calc((100vw - 1040px)/2)) 0;
   display:flex;align-items:center;justify-content:space-between;gap:10px;
-  background:color-mix(in srgb,var(--bg) 48%,transparent);
-  backdrop-filter:blur(22px) saturate(1.8);
-  -webkit-backdrop-filter:blur(22px) saturate(1.8);
-  border-bottom:1px solid color-mix(in srgb,var(--line) 70%,transparent);
+  background:var(--bg);
+  backdrop-filter:none;
+  -webkit-backdrop-filter:none;
+  border-bottom:1px solid var(--line);
 }
 .brand{
   display:flex;align-items:center;gap:10px;
@@ -237,17 +237,17 @@ body.reg-open .topbar,body.reg-open .bottomnav{display:none}
 
 #dashboard>.heading,#history>.heading,#wishlist>.heading,#stats>.heading,#settings>.heading{
   position:sticky;top:0;z-index:20;
-  background:color-mix(in srgb,var(--bg) 52%,transparent);
-  backdrop-filter:blur(20px) saturate(1.7);-webkit-backdrop-filter:blur(20px) saturate(1.7);
+  background:var(--bg);
+  backdrop-filter:none;-webkit-backdrop-filter:none;
   height:64px;min-height:64px;margin:0 -16px;padding:6px 16px 8px;
   flex:none;
 }
 #history>.toolbar,#wishlist>.toolbar{
   position:sticky;top:64px;z-index:19;
-  background:color-mix(in srgb,var(--bg) 54%,transparent);
-  backdrop-filter:blur(20px) saturate(1.7);-webkit-backdrop-filter:blur(20px) saturate(1.7);
+  background:var(--bg);
+  backdrop-filter:none;-webkit-backdrop-filter:none;
   margin:0 -16px 10px;padding:4px 16px 10px;
-  border-bottom:1px solid color-mix(in srgb,var(--line) 65%,transparent);
+  border-bottom:1px solid var(--line);
 }
 
 /* Buttons */
@@ -397,11 +397,11 @@ body.reg-open .topbar,body.reg-open .bottomnav{display:none}
   background:var(--surface-2);
   border:1px solid var(--line);
   border-radius:14px;
-  cursor:pointer;
-  transition:transform .14s,background .14s,border-color .14s;
+  transition:background .14s,border-color .14s;
 }
-.mini-row:hover{border-color:var(--line-strong);background:var(--surface)}
-.mini-row:active{transform:scale(.99)}
+.mini-row.slot{cursor:pointer;transition:transform .14s,background .14s,border-color .14s}
+.mini-row.slot:hover{border-color:var(--line-strong);background:var(--surface)}
+.mini-row.slot:active{transform:scale(.99)}
 .mini-thumb{
   height:80%;aspect-ratio:1/1;width:auto;
   border-radius:10px;
@@ -516,12 +516,10 @@ select.field,.formfield select{
   border:1px solid var(--line);
   border-radius:18px;
   box-shadow:var(--shadow-sm);
-  cursor:pointer;
   content-visibility:auto;contain-intrinsic-size:auto 106px;
-  transition:transform .14s,border-color .14s,box-shadow .14s;
+  transition:border-color .14s,box-shadow .14s;
 }
 .record-row:hover{border-color:var(--line-strong);box-shadow:var(--shadow-md)}
-.record-row:active{transform:scale(.992)}
 .thumb{
   width:80px;height:80px;border-radius:14px;
   overflow:hidden;
@@ -559,15 +557,24 @@ html[data-theme="terminal"] .pill.wanted,html[data-theme="midnight"] .pill.wante
 .feature-card{
   position:relative;overflow:hidden;
   aspect-ratio:1/1;border-radius:18px;
-  color:#fff;cursor:pointer;
+  color:#fff;
   background:linear-gradient(145deg,var(--hero-dark),var(--hero-dark-2));
   border:1px solid var(--line);
   box-shadow:var(--shadow-sm);
-  transition:transform .15s,box-shadow .15s;
+  transition:box-shadow .15s;
 }
 .feature-card.wish{background:linear-gradient(145deg,#3b2608,#7c4d0b)}
 .feature-card:hover{box-shadow:var(--shadow-md)}
-.feature-card:active{transform:scale(.98)}
+.title-tap{
+  cursor:pointer;
+  border-radius:8px;
+  padding:4px 6px;
+  margin:-4px -6px;
+  transition:background .14s,opacity .14s;
+}
+.mini-row .title-tap:hover,.record-row .title-tap:hover{background:color-mix(in srgb,var(--accent) 10%,transparent)}
+.feature-card .title-tap:hover{background:rgba(255,255,255,0.14)}
+.title-tap:active{opacity:.72}
 .feature-card .photo{position:absolute;inset:0;background-size:cover;background-position:center}
 .feature-card:after{
   content:"";position:absolute;inset:25% 0 0;
@@ -584,9 +591,21 @@ html[data-theme="terminal"] .pill.wanted,html[data-theme="midnight"] .pill.wante
 .feature-meta{font-size:12px;margin-top:4px;opacity:.88;line-height:1.45}
 .fc-badge{
   position:absolute;top:10px;right:10px;z-index:3;margin:0;
-  box-shadow:var(--shadow-sm);
+  box-shadow:0 4px 12px rgba(0,0,0,0.28);
+  backdrop-filter:blur(8px) saturate(1.3);
+  -webkit-backdrop-filter:blur(8px) saturate(1.3);
+  background:color-mix(in srgb,var(--surface) 78%,transparent);
+  color:var(--ink);
+  font-weight:800;
+  border:1px solid rgba(255,255,255,0.28);
 }
-.none.fc-badge{background:color-mix(in srgb,var(--surface-2) 65%,transparent)}
+.feature-card .success.fc-badge{background:color-mix(in srgb,var(--ok) 80%,transparent);color:#ffffff;border-color:rgba(255,255,255,0.3)}
+.feature-card .fail.fc-badge{background:color-mix(in srgb,var(--ng) 80%,transparent);color:#ffffff;border-color:rgba(255,255,255,0.3)}
+.feature-card .done.fc-badge{background:color-mix(in srgb,var(--accent) 82%,transparent);color:var(--on-accent);border-color:rgba(255,255,255,0.3)}
+.feature-card .wanted.fc-badge{background:color-mix(in srgb,var(--brass) 82%,transparent);color:#ffffff;border-color:rgba(255,255,255,0.3)}
+.feature-card .reserved.fc-badge{background:color-mix(in srgb,var(--accent) 82%,transparent);color:var(--on-accent);border-color:rgba(255,255,255,0.3)}
+.feature-card .past.fc-badge{background:color-mix(in srgb,var(--surface-2) 78%,transparent);color:var(--ink);border-color:rgba(255,255,255,0.28)}
+.none.fc-badge{background:color-mix(in srgb,var(--surface) 78%,transparent);color:var(--ink)}
 .red{color:var(--ng);font-weight:700}
 .feature-meta .red{color:#ff9494}
 
@@ -951,10 +970,10 @@ html[data-theme="terminal"] .pill.wanted,html[data-theme="midnight"] .pill.wante
   position:sticky;top:0;z-index:20;
   flex:none;margin:0;
   padding:calc(var(--safe-t) + 12px) 16px 12px;
-  background:color-mix(in srgb,var(--bg) 52%,transparent);
-  backdrop-filter:blur(20px) saturate(1.7);
-  -webkit-backdrop-filter:blur(20px) saturate(1.7);
-  border-bottom:1px solid color-mix(in srgb,var(--line) 75%,transparent);
+  background:var(--bg);
+  backdrop-filter:none;
+  -webkit-backdrop-filter:none;
+  border-bottom:1px solid var(--line);
   align-items:flex-start;
 }
 #register>.panel{
@@ -1046,10 +1065,10 @@ html[data-theme="terminal"] .pill.wanted,html[data-theme="midnight"] .pill.wante
   position:sticky;top:0;z-index:20;
   flex:none;margin:0;
   padding:calc(var(--safe-t) + 12px) 16px 12px;
-  background:color-mix(in srgb,var(--bg) 52%,transparent);
-  backdrop-filter:blur(20px) saturate(1.7);
-  -webkit-backdrop-filter:blur(20px) saturate(1.7);
-  border-bottom:1px solid color-mix(in srgb,var(--line) 75%,transparent);
+  background:var(--bg);
+  backdrop-filter:none;
+  -webkit-backdrop-filter:none;
+  border-bottom:1px solid var(--line);
 }
 .modal.full .dm-body{
   flex:1 1 auto;min-height:0;overflow-y:auto;
@@ -1132,7 +1151,7 @@ html[data-theme="terminal"] .pill.wanted,html[data-theme="midnight"] .pill.wante
 .modalback.dlg{z-index:90;align-items:center;padding:16px}
 .dialog{width:min(420px,100%);border-radius:22px;animation:pop .2s ease-out;padding:22px}
 .dlg-msg{font-size:14.5px;font-weight:700;line-height:1.7;white-space:pre-wrap;margin-bottom:14px;overflow-wrap:anywhere}
-.dialog .form-actions{display:flex;gap:10px;margin-top:16px}
+.dialog .form-actions,.modal:not(.full) .form-actions{display:flex;gap:10px;margin-top:18px}
 .dialog .btn{flex:1}
 
 .toast{
@@ -1270,15 +1289,17 @@ html[data-theme="terminal"] .pill.wanted,html[data-theme="midnight"] .pill.wante
     <div class="toolbar history-toolbar">
       <div class="toolbar-row">
         <input class="field search" id="historySearch" placeholder="公演名･団体･場所･＃で検索" oninput="debouncedHistory()">
-        <select class="field" id="sortOrder" onchange="renderHistory()" aria-label="並び順">
-          <option value="desc">新しい順</option>
-          <option value="asc">古い順</option>
-          <option value="rating">満足度順</option>
-          <option value="price">チケット代順</option>
-        </select>
       </div>
-      <div class="toolbar-row" style="justify-content:space-between">
-        <button type="button" class="btn light small filterbtn" id="filterBtn" onclick="openFilter()">絞り込み</button>
+      <div class="toolbar-row" style="justify-content:space-between;align-items:center">
+        <div style="display:flex;align-items:center;gap:8px">
+          <select class="field" id="sortOrder" onchange="renderHistory()" aria-label="並び順" style="padding:7px 30px 7px 11px;min-height:36px;font-size:12.5px">
+            <option value="desc">新しい順</option>
+            <option value="asc">古い順</option>
+            <option value="rating">満足度順</option>
+            <option value="price">チケット代順</option>
+          </select>
+          <button type="button" class="btn light small filterbtn" id="filterBtn" onclick="openFilter()" style="min-height:36px">絞り込み</button>
+        </div>
         <div class="switch"><button data-view="list" class="active" onclick="setView('list',this)">一覧</button><button data-view="cards" onclick="setView('cards',this)">カード</button></div>
       </div>
     </div>
@@ -1332,7 +1353,6 @@ html[data-theme="terminal"] .pill.wanted,html[data-theme="midnight"] .pill.wante
       <button class="btn add-compact" onclick="openWishModal()">＋ 追加</button>
     </div>
     <div class="toolbar wish-toolbar" style="flex-direction:column;align-items:stretch;gap:8px">
-      <div class="wish-filter"><button class="active" data-wfilter="all" onclick="setWishFilter('all',this)">すべて <span id="wishAllCount">0</span></button><button data-wfilter="wanted" onclick="setWishFilter('wanted',this)">行きたい <span id="wantedCount">0</span></button><button data-wfilter="reserved" onclick="setWishFilter('reserved',this)">購入済み <span id="reservedCount">0</span></button></div>
       <div class="toolbar-row" style="display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%">
         <select class="field" id="wishSort" onchange="renderWishes()" aria-label="並び順" style="padding:7px 30px 7px 11px;min-height:36px;font-size:12.5px">
           <option value="added">登録順</option>
@@ -1482,7 +1502,7 @@ html[data-theme="terminal"] .pill.wanted,html[data-theme="midnight"] .pill.wante
       <input type="hidden" id="wishEditId">
       <div class="formgrid">
         <div class="formfield full"><label for="wishTitle">公演タイトル <span class="req">*</span></label><input id="wishTitle" class="field" required placeholder="公演タイトルを入力"></div>
-        <div class="formfield full"><label>状態</label><input type="hidden" id="wishStatus" value="wanted"><div class="segbtns" id="wishStatusSeg" role="group" aria-label="状態"><button type="button" data-v="wanted" onclick="setWishStatus('wanted')">行きたい</button><button type="button" data-v="reserved" onclick="setWishStatus('reserved')">購入済み</button></div></div>
+        <div class="formfield full"><label>チケット購入状況</label><label class="chk"><input type="checkbox" id="wishReserved"><span>購入済み</span></label></div>
         <div class="formfield"><label for="wishDate">参加予定日</label><input id="wishDate" type="date"></div>
         <div class="formfield"><label for="wishTimeBtn">参加予定時刻</label><input type="hidden" id="wishTime"><button type="button" class="field timebtn muted" id="wishTimeBtn" onclick="openTimePicker('wishTime')">時刻を選択</button></div>
         <div class="formfield"><label for="wishType">公演類型</label><select id="wishType"></select></div>
@@ -1517,19 +1537,19 @@ html[data-theme="terminal"] .pill.wanted,html[data-theme="midnight"] .pill.wante
 </div>
 
 <!-- Filter Modal -->
-<div class="modalback full" id="filterModal" role="dialog" aria-modal="true" aria-labelledby="filterTitle">
-  <div class="modal full">
+<div class="modalback" id="filterModal" role="dialog" aria-modal="true" aria-labelledby="filterTitle">
+  <div class="modal">
     <div class="detail-head"><div><div class="eyebrow">FILTER ARCHIVE</div><h2 id="filterTitle">絞り込み</h2></div><button class="iconbtn" onclick="closeFilter()">閉じる</button></div>
     <div class="dm-body">
       <div class="formgrid">
         <div class="formfield full">
-          <label for="fYmBtn">年月（ドラムロール選択）</label>
+          <label for="fYmBtn">年月</label>
           <input type="hidden" id="fYm">
           <button type="button" class="field timebtn muted" id="fYmBtn" onclick="openYmPicker()">年月を選択（すべて）</button>
         </div>
         <div class="formfield full"><label for="fRes">結果</label><select id="fRes" onchange="applyFilter()"><option value="">すべて</option><option value="success">脱出成功</option><option value="fail">脱出失敗</option><option value="done">完了</option><option value="none">結果未入力</option></select></div>
         <div class="formfield full"><label for="fType">類型</label><select id="fType" onchange="applyFilter()"></select></div>
-        <div class="formfield full"><label for="fOrg">主催団体</label><select id="fOrg" onchange="applyFilter()"></select></div>
+        
         <div class="formfield full"><label for="fComp">同行者</label><select id="fComp" onchange="applyFilter()"></select></div>
       </div>
     </div>
@@ -1643,20 +1663,23 @@ function slotRows(n,type){
 function miniRow(x,type){
   const rec=type==='record';
   const photo=rec?recThumb(x):wishThumb(x);
-  const st=rec?(x.result==='success'?'成功':x.result==='fail'?'失敗':x.result==='done'?'完了':'未入力'):(x.status==='reserved'?'購入済':'行きたい');
-  const cls=rec?(x.result==='success'?'success':x.result==='fail'?'fail':x.result==='done'?'done':'none'):(x.status==='reserved'?'reserved':'wanted');
+  const st=rec?(x.result==='success'?'成功':x.result==='fail'?'失敗':x.result==='done'?'完了':'未入力'):(x.status==='reserved'?'購入済':'');
+  const cls=rec?(x.result==='success'?'success':x.result==='fail'?'fail':x.result==='done'?'done':'none'):(x.status==='reserved'?'reserved':'');
+  const badge=st?`<span class="pill ${cls}">${st}</span>`:'';
   const thumbInner=photo?`<img src="${photo}" alt="" loading="lazy" decoding="async">`:resIcon(rec?x.result:'');
-  return `<article class="mini-row" role="button" tabindex="0" onclick="${rec?`showRecordDetail('${x.id}')`:`showWishDetail('${x.id}')`}" onkeydown="if(event.key==='Enter')this.click()"><div class="mini-thumb">${thumbInner}</div><div class="mini-main" style="min-width:0"><div class="mini-title">${esc(x.title)}</div><div class="mini-meta">${esc(x.date||'日程未定')}${x.organizer?' · '+esc(x.organizer):''}</div></div><span class="pill ${cls}">${st}</span></article>`;
+  const act=rec?`showRecordDetail('${x.id}')`:`showWishDetail('${x.id}')`;
+  return `<article class="mini-row"><div class="mini-thumb">${thumbInner}</div><div class="mini-main" style="min-width:0"><div class="mini-title title-tap" role="button" tabindex="0" onclick="${act}" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();${act}}">${esc(x.title)}</div><div class="mini-meta">${esc(x.date||'日程未定')}${x.organizer?' · '+esc(x.organizer):''}</div></div>${badge}</article>`;
 }
 
 function setView(v,btn){if(v==='calendar')return;currentView=v;document.querySelectorAll('[data-view]').forEach(b=>b.classList.toggle('active',b===btn));renderHistory()}
-function renderHistory(){const q=($('historySearch').value||'').toLowerCase(),sort=$('sortOrder').value;let arr=histFiltered(db.records).filter(x=>[x.title,x.organizer,x.venue,x.hashtags].join(' ').toLowerCase().includes(q)).sort((a,b)=>sort==='asc'?(a.date+(a.time||'')).localeCompare(b.date+(b.time||'')):sort==='rating'?(Number(b.rating)||0)-(Number(a.rating)||0)||(b.date||'').localeCompare(a.date||''):sort==='price'?(Number(b.price)||-1)-(Number(a.price)||-1)||(b.date||'').localeCompare(a.date||''):(b.date+(b.time||'')).localeCompare(a.date+(a.time||'')));const el=$('historyContent');renderFilterChips(arr.length);if(!arr.length){el.innerHTML=`<div class="empty">${db.records.length?'条件に合う参加記録はありません。':'参加記録はまだありません。'}</div>`;stripOrphanBraceText(el);return}if(currentView==='list'){el.innerHTML=`<div class="record-list">${arr.map(recordRow).join('')}</div>`}else{el.innerHTML=`<div class="feature-list">${arr.map(x=>`<article class="feature-card" onclick="showRecordDetail('${x.id}')"><div class="photo" ${recThumb(x)?`style="background-image:url('${recThumb(x)}')"`:''}></div><span class="pill ${x.result==='success'?'success':x.result==='fail'?'fail':x.result==='done'?'done':'none'} fc-badge">${resText(x.result)}</span><div class="feature-info"><div class="feature-title">${esc(x.title)}</div><div class="feature-meta"><div>${esc(x.date||'日程未定')}${x.time?' '+esc(x.time):''}</div>${x.organizer?`<div>${esc(x.organizer)}</div>`:''}</div></div></article>`).join('')}</div>`}stripOrphanBraceText(el)}
-function recordRow(x){const img=recThumb(x);return `<article class="record-row record-clickable" role="button" tabindex="0" onclick="showRecordDetail('${x.id}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();showRecordDetail('${x.id}')}" ><div class="thumb">${img?`<img src="${img}" alt="" loading="lazy" decoding="async">`:resIcon(x.result)}</div><div class="record-main"><div class="record-title">${esc(x.title)}</div><div class="meta">${esc(x.date)} ${esc(x.time||'')}</div><div class="meta">${esc(x.organizer||'主催未登録')}</div>${[...(x.companions||[]),...(x.oneOffCompanions||[])].length?`<div class="meta">${nameList([...(x.companions||[]),...(x.oneOffCompanions||[])])}</div>`:''}<span class="pill ${x.result==='success'?'success':x.result==='fail'?'fail':x.result==='done'?'done':'none'}">${x.result==='success'?rIco('success')+'脱出成功':x.result==='fail'?rIco('fail')+'脱出失敗':x.result==='done'?rIco('done')+'完了':'結果未入力'}</span> ${x.rating?`<span class="rstars">${'★'.repeat(x.rating)}</span>`:''}</div></article>` }
+function renderHistory(){const q=($('historySearch').value||'').toLowerCase(),sort=$('sortOrder').value;let arr=histFiltered(db.records).filter(x=>[x.title,x.organizer,x.venue,x.hashtags].join(' ').toLowerCase().includes(q)).sort((a,b)=>sort==='asc'?(a.date+(a.time||'')).localeCompare(b.date+(b.time||'')):sort==='rating'?(Number(b.rating)||0)-(Number(a.rating)||0)||(b.date||'').localeCompare(a.date||''):sort==='price'?(Number(b.price)||-1)-(Number(a.price)||-1)||(b.date||'').localeCompare(a.date||''):(b.date+(b.time||'')).localeCompare(a.date+(a.time||'')));const el=$('historyContent');renderFilterChips(arr.length);if(!arr.length){el.innerHTML=`<div class="empty">${db.records.length?'条件に合う参加記録はありません。':'参加記録はまだありません。'}</div>`;stripOrphanBraceText(el);return}if(currentView==='list'){el.innerHTML=`<div class="record-list">${arr.map(recordRow).join('')}</div>`}else{el.innerHTML=`<div class="feature-list">${arr.map(x=>`<article class="feature-card"><div class="photo" ${recThumb(x)?`style="background-image:url('${recThumb(x)}')"`:''}></div><span class="pill ${x.result==='success'?'success':x.result==='fail'?'fail':x.result==='done'?'done':'none'} fc-badge">${resText(x.result)}</span><div class="feature-info"><div class="feature-title title-tap" role="button" tabindex="0" onclick="showRecordDetail('${x.id}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();showRecordDetail('${x.id}')}">${esc(x.title)}</div><div class="feature-meta"><div>${esc(x.date||'日程未定')}${x.time?' '+esc(x.time):''}</div>${x.organizer?`<div>${esc(x.organizer)}</div>`:''}</div></div></article>`).join('')}</div>`}stripOrphanBraceText(el)}
+function recordRow(x){const img=recThumb(x);return `<article class="record-row"><div class="thumb">${img?`<img src="${img}" alt="" loading="lazy" decoding="async">`:resIcon(x.result)}</div><div class="record-main"><div class="record-title title-tap" role="button" tabindex="0" onclick="showRecordDetail('${x.id}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();showRecordDetail('${x.id}')}">${esc(x.title)}</div><div class="meta">${esc(x.date)} ${esc(x.time||'')}</div><div class="meta">${esc(x.organizer||'主催未登録')}</div>${[...(x.companions||[]),...(x.oneOffCompanions||[])].length?`<div class="meta">${nameList([...(x.companions||[]),...(x.oneOffCompanions||[])])}</div>`:''}<span class="pill ${x.result==='success'?'success':x.result==='fail'?'fail':x.result==='done'?'done':'none'}">${x.result==='success'?rIco('success')+'脱出成功':x.result==='fail'?rIco('fail')+'脱出失敗':x.result==='done'?rIco('done')+'完了':'結果未入力'}</span> ${x.rating?`<span class="rstars">${'★'.repeat(x.rating)}</span>`:''}</div></article>` }
 
 function renderStats(){const records=db.records||[],total=records.length,success=records.filter(r=>r.result==='success').length,failed=records.filter(r=>r.result==='fail').length,rated=success+failed,rate=rated?Math.round(success/rated*100):0,avg=records.filter(r=>Number(r.rating)>0);const ratings=avg.length?(avg.reduce((a,r)=>a+Number(r.rating),0)/avg.length).toFixed(1):'—';const priced=records.filter(r=>r.price!==''&&r.price!==undefined&&Number(r.price)>=0);const totalCost=priced.reduce((a,r)=>a+Number(r.price),0);const avgCost=priced.length?Math.round(totalCost/priced.length):0;$('statsContent').innerHTML=`<div class="stats-overview"><div class="stat-mini"><span>参加公演数</span><strong>${total}</strong></div><div class="stat-mini"><span>脱出成功率</span><strong>${rated?rate+'%':'—'}</strong></div><div class="stat-mini"><span>平均満足度</span><strong>${ratings}${ratings!=='—'?'<small>/5</small>':''}</strong></div><div class="stat-mini sf"><span>成功 / 失敗</span><strong>${success} / ${failed}</strong></div><div class="stat-mini stat-cost"><span>累計チケット代</span><strong>${priced.length?'¥'+totalCost.toLocaleString('ja-JP'):'—'}</strong></div><div class="stat-mini stat-cost"><span>平均チケット代</span><strong>${priced.length?'¥'+avgCost.toLocaleString('ja-JP'):'—'}</strong></div></div><div class="stats-panels">${statsPanels(records)}</div>`}
-let statsYear='',statsView={type:'bar',org:'bar',comp:'bar'};
+let statsYear='',statsView={type:'bar',org:'bar',comp:'bar'},statsExpand={org:false,comp:false,orgRate:false};
 const PIECOL=['var(--pc1)','var(--pc2)','var(--pc3)','var(--pc4)','var(--pc5)','var(--pc6)'];
 function toggleStatsYear(y){statsYear=statsYear===y?'':y;renderStats()}
+function toggleStatsExpand(k,e){if(e)e.stopPropagation();statsExpand[k]=!statsExpand[k];renderStats()}
 function setStatsViewMode(k,mode,e){if(e)e.stopPropagation();statsView[k]=mode;renderStats()}
 function toggleStatsView(k){statsView[k]=statsView[k]==='pie'?'bar':'pie';renderStats()}
 function tally(records,pick){const m={};records.forEach(r=>{const v=pick(r);(Array.isArray(v)?v:[v]).forEach(k=>{if(k)m[k]=(m[k]||0)+1})});return Object.entries(m).sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0],'ja'))}
@@ -1668,9 +1691,11 @@ function statsPanels(records){const years={};records.forEach(r=>{if(r.date){cons
 const monthChart=y=>{const m=Array(12).fill(0);records.forEach(r=>{if(r.date&&r.date.slice(0,4)===y){const k=Number(r.date.slice(5,7));if(k>=1&&k<=12)m[k-1]++}});const mx=Math.max(1,...m);return `<div class="month-chart" role="img" aria-label="${y}年の月別参加数">${m.map((c,i)=>`<div class="mc"><b>${c||''}</b><span class="mc-bar"><i style="height:${Math.round(c/mx*100)}%"></i></span><em>${i+1}</em></div>`).join('')}</div>`};
 const yearHtml=yRows.length?yRows.map(([y,n])=>{const open=statsYear===y;return `<button type="button" class="bar-row yr ${open?'open':''}" aria-expanded="${open}" onclick="toggleStatsYear('${y}')"><span>${y}年</span><div class="bar-track"><i style="width:${Math.round(n/ymax*100)}%"></i></div><b>${n}</b></button>${open?monthChart(y):''}`}).join(''):'<div class="empty">まだデータがありません</div>';
 const typeRows=tally(records,r=>r.eventType||'未設定'),orgRows=tally(records,r=>r.organizer),compRows=tally(records,r=>[...new Set([...(r.companions||[]),...(r.oneOffCompanions||[])].map(n=>String(n).trim()).filter(Boolean))]);
-const typeRateRows=rateTally(records,r=>r.eventType||'未設定'),orgRateRows=rateTally(records,r=>r.organizer).slice(0,5);
-const tp=(key,title,small,rows,empty,limit,rank)=>{const pie=statsView[key]==='pie';return `<section class="panel"><div class="panel-head"><h3>${title}</h3><span class="ph-right"><small>${small}</small><span class="switch" role="group" aria-label="グラフ形式切替"><button type="button" class="${!pie?'active':''}" onclick="setStatsViewMode('${key}','bar',event)" style="min-height:24px;padding:0 8px;font-size:11px">棒</button><button type="button" class="${pie?'active':''}" onclick="setStatsViewMode('${key}','pie',event)" style="min-height:24px;padding:0 8px;font-size:11px">円</button></span></span></div>${pie?pieChart(rows,empty):barList(limit?rows.slice(0,limit):rows,empty,rank)}</section>`};
-return `<section class="panel"><div class="panel-head"><h3>年別参加数</h3><small>タップで月別</small></div>${yearHtml}</section>`+tp('type','類型別参加数','ホール・ルームなど',typeRows,'まだデータがありません',0,false)+tp('org','主催団体別参加数','上位5団体',orgRows,'主催団体の記録がありません',5,false)+tp('comp','同行回数','上位5名',compRows,'同行者の記録がありません',5,true)+`<section class="panel"><div class="panel-head"><h3>類型別 脱出成功率</h3><small>成功 / 勝敗記録</small></div>${rateBarList(typeRateRows,'勝敗の記録がまだありません')}</section>`+`<section class="panel"><div class="panel-head"><h3>主催団体別 脱出成功率</h3><small>参加数上位5団体</small></div>${rateBarList(orgRateRows,'勝敗の記録がまだありません')}</section>`}
+const typeRateRows=rateTally(records,r=>r.eventType||'未設定'),allOrgRateRows=rateTally(records,r=>r.organizer);
+const expCtrl=(key,rows,baseSmall)=>rows.length>5?`<button type="button" class="iconbtn" style="min-height:24px;padding:0 8px;font-size:11px" aria-expanded="${!!statsExpand[key]}" onclick="toggleStatsExpand('${key}',event)">${statsExpand[key]?'上位5件に戻す':'すべて見る'}</button>`:`<small>${baseSmall}</small>`;
+const tp=(key,title,small,rows,empty,limit,rank)=>{const pie=statsView[key]==='pie',canExp=limit>0&&!pie&&rows.length>limit,exp=canExp&&statsExpand[key],shown=(limit&&!exp)?rows.slice(0,limit):rows,sub=(limit&&!pie)?expCtrl(key,rows,small):`<small>${small}</small>`,tapAttr=canExp?` role="button" tabindex="0" aria-expanded="${!!statsExpand[key]}" onclick="toggleStatsExpand('${key}',event)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleStatsExpand('${key}',event)}" style="cursor:pointer"`:'';return `<section class="panel"${tapAttr}><div class="panel-head"><h3>${title}</h3><span class="ph-right">${sub}<span class="switch" role="group" aria-label="グラフ形式切替"><button type="button" class="${!pie?'active':''}" onclick="setStatsViewMode('${key}','bar',event)" style="min-height:24px;padding:0 8px;font-size:11px">棒</button><button type="button" class="${pie?'active':''}" onclick="setStatsViewMode('${key}','pie',event)" style="min-height:24px;padding:0 8px;font-size:11px">円</button></span></span></div>${pie?pieChart(rows,empty):barList(shown,empty,rank)}</section>`};
+const orgRateCanExp=allOrgRateRows.length>5,orgRateRows=(orgRateCanExp&&statsExpand.orgRate)?allOrgRateRows:allOrgRateRows.slice(0,5),orgRateTap=orgRateCanExp?` role="button" tabindex="0" aria-expanded="${!!statsExpand.orgRate}" onclick="toggleStatsExpand('orgRate',event)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleStatsExpand('orgRate',event)}" style="cursor:pointer"`:'';
+return `<section class="panel"><div class="panel-head"><h3>年別参加数</h3><small>タップで月別</small></div>${yearHtml}</section>`+tp('type','類型別参加数','ホール・ルームなど',typeRows,'まだデータがありません',0,false)+tp('org','主催団体別参加数','上位5団体',orgRows,'主催団体の記録がありません',5,false)+tp('comp','同行回数','上位5名',compRows,'同行者の記録がありません',5,true)+`<section class="panel"><div class="panel-head"><h3>類型別 脱出成功率</h3><small>成功 / 勝敗記録</small></div>${rateBarList(typeRateRows,'勝敗の記録がまだありません')}</section>`+`<section class="panel"${orgRateTap}><div class="panel-head"><h3>主催団体別 脱出成功率</h3>${expCtrl('orgRate',allOrgRateRows,'参加数上位5団体')}</div>${rateBarList(orgRateRows,'勝敗の記録がまだありません')}</section>`}
 
 function renderMasterSelects(){for(const [key,id,label] of [['organizers','organizer','主催団体'],['venues','venue','会場'],['organizers','wishOrganizer','主催団体'],['venues','wishVenue','会場']]){const el=$(id),old=el.value;el.innerHTML=`<option value="">${label}を選択</option>`+sortJa(db[key]||[]).map(v=>`<option value="${esc(v)}">${esc(v)}</option>`).join('')+'<option value="__other">その他（都度入力）</option>';if(old&&(old==='__other'||db[key].includes(old)))el.value=old;syncMF(id)}}
 function syncMF(id){const o=$(id+'Other');if(o)o.hidden=$(id).value!=='__other'}
@@ -1758,7 +1783,7 @@ function openWishModal(id=''){
   const titleIconUse=$('wishModalTitle')?.querySelector('use');
   if(titleIconUse)titleIconUse.setAttribute('href',w?'#i-edit':'#i-plus-sq');
   $('wishTitle').value=w?.title||'';
-  setWishStatus(w?.status||'wanted');
+  $('wishReserved').checked=(w?.status==='reserved');
   $('wishDate').value=w?.date||'';
   setSel('wishTime',w?.time||'');
   $('wishType').value=w?.eventType||'';
@@ -1785,7 +1810,7 @@ function renderWishCompanionChecks(selected=[]){wishSelectedComp=new Set(selecte
 function toggleWishCompanion(e){const c=decodeURIComponent(e),other=parseNames($('wishOtherCompanions').value);wishSelectedComp.has(c)?wishSelectedComp.delete(c):wishSelectedComp.add(c);renderWishCompanionChecks([...wishSelectedComp,...other])}
 function renderWishPhotoPreview(){$('wishPhotoPreview').innerHTML=wishPhotos.map((p,i)=>`<div class="photo-wrap"><img src="${p}" alt="添付した写真"><button type="button" aria-label="写真を削除" onclick="removeWishPhoto(${i})">×</button></div>`).join('')}
 async function removeWishPhoto(i){if(!await askConfirm('この写真を削除しますか？'))return;wishPhotos.splice(i,1);renderWishPhotoPreview()}
-function showWishDetail(id){const w=db.wishes.find(x=>x.id===id);if(!w)return;detailWishId=id;$('wishDetailTitle').innerHTML=`<span class="dt">${esc(w.title)}</span><span class="pill ${w.status==='reserved'?'reserved':'wanted'}">${w.status==='reserved'?'購入済み':'行きたい'}</span>`;const item=(l,v,full)=>`<div class="detail-item ${full?'full':''}"><div class="detail-label">${l}</div><div class="detail-value">${v||'—'}</div></div>`,price=w.price!==''&&w.price!==undefined?'¥'+Number(w.price).toLocaleString('ja-JP'):'',comps=[...new Set([...(w.companions||[]),...(w.oneOffCompanions||[])])],photos=w.photos&&w.photos.length?w.photos:(wishCover(w)?[wishCover(w)]:[]),link=(u,t)=>u?`<a href="${esc(u)}" target="_blank" rel="noopener">${t}</a>`:'';$('wishDetailBody').innerHTML=`<div class="detail-grid">${item('参加予定日・時刻',esc(w.date||'日程未定')+(w.time?' '+esc(w.time):''))}${item('公演類型',esc(w.eventType||'未設定'))}${item('参加予定人数',Number(w.participants)>0?Number(w.participants)+'人':'未入力')}${item('チケット代',esc(price))}${w.advance?item('立替',`<span class="red">${esc(w.advanceTo||'あり')}</span>`):''}${item('主催団体',esc(w.organizer||''),true)}${item('会場・店舗',esc(w.venue||''),true)}${item('同行予定者',comps.length?nameList(comps):'',true)}${item('公演URL',link(w.url,'公演ページを開く'))}${item('チケット発売日時',esc(fmtDT(w.saleAt)))}${item('アラーム',esc(fmtDT(w.alarmAt)))}${item('チケット販売ページ',link(w.saleUrl,'販売ページを開く'))}${item('メモ',esc(w.memo||''),true)}<div class="detail-item full"><div class="detail-label">写真・スクリーンショット</div>${photos.length?`<div class="detail-photos">${photos.map(src=>`<img src="${src}" alt="">`).join('')}</div>`:'<div class="detail-value">—</div>'}</div></div>`;$('wishDetailModal').classList.add('show')}
+function showWishDetail(id){const w=db.wishes.find(x=>x.id===id);if(!w)return;detailWishId=id;$('wishDetailTitle').innerHTML=`<span class="dt">${esc(w.title)}</span>${w.status==='reserved'?'<span class="pill reserved">購入済み</span>':''}`;const item=(l,v,full)=>`<div class="detail-item ${full?'full':''}"><div class="detail-label">${l}</div><div class="detail-value">${v||'—'}</div></div>`,price=w.price!==''&&w.price!==undefined?'¥'+Number(w.price).toLocaleString('ja-JP'):'',comps=[...new Set([...(w.companions||[]),...(w.oneOffCompanions||[])])],photos=w.photos&&w.photos.length?w.photos:(wishCover(w)?[wishCover(w)]:[]),link=(u,t)=>u?`<a href="${esc(u)}" target="_blank" rel="noopener">${t}</a>`:'';$('wishDetailBody').innerHTML=`<div class="detail-grid">${item('参加予定日・時刻',esc(w.date||'日程未定')+(w.time?' '+esc(w.time):''))}${item('公演類型',esc(w.eventType||'未設定'))}${item('参加予定人数',Number(w.participants)>0?Number(w.participants)+'人':'未入力')}${item('チケット代',esc(price))}${w.advance?item('立替',`<span class="red">${esc(w.advanceTo||'あり')}</span>`):''}${item('主催団体',esc(w.organizer||''),true)}${item('会場・店舗',esc(w.venue||''),true)}${item('同行予定者',comps.length?nameList(comps):'',true)}${item('公演URL',link(w.url,'公演ページを開く'))}${item('チケット発売日時',esc(fmtDT(w.saleAt)))}${item('アラーム',esc(fmtDT(w.alarmAt)))}${item('チケット販売ページ',link(w.saleUrl,'販売ページを開く'))}${item('メモ',esc(w.memo||''),true)}<div class="detail-item full"><div class="detail-label">写真・スクリーンショット</div>${photos.length?`<div class="detail-photos">${photos.map(src=>`<img src="${src}" alt="">`).join('')}</div>`:'<div class="detail-value">—</div>'}</div></div>`;$('wishDetailModal').classList.add('show')}
 function closeWishDetail(){$('wishDetailModal').classList.remove('show')}
 function editWishFromDetail(){const id=detailWishId;closeWishDetail();openWishModal(id)}
 async function deleteWishFromDetail(){const id=detailWishId;await deleteWish(id);closeWishDetail()}
@@ -1814,7 +1839,7 @@ const nameList=a=>sortJa(a).map((n,i)=>`<span class="nm">${esc(n)}${i<a.length-1
 function resBadge(r){return r==='success'?'<span class="pill success">'+rIco('success')+'脱出成功</span>':r==='fail'?'<span class="pill fail">'+rIco('fail')+'脱出失敗</span>':r==='done'?'<span class="pill done">'+rIco('done')+'完了</span>':''}
 function fmtDT(v){return String(v||'').replace('T',' ').replace(/-/g,'/')}
 let _wishSnap='';
-function getWishSnap(){return JSON.stringify({t:$('wishTitle').value,s:$('wishStatus').value,d:$('wishDate').value,tm:$('wishTime').value,tp:$('wishType').value,o:getMF('wishOrganizer'),v:getMF('wishVenue'),c:[...wishSelectedComp],oc:$('wishOtherCompanions').value,p:$('wishParticipants').value,tb:$('wishTablemates').value,pr:$('wishPrice').value,ad:$('wishAdvance').checked,adt:$('wishAdvanceTo').value,u:$('wishUrl').value,sa:$('wishSaleAt').value,al:$('wishAlarmAt').value,su:$('wishSaleUrl').value,m:$('wishMemo').value,ph:wishPhotos.length})}
+function getWishSnap(){return JSON.stringify({t:$('wishTitle').value,s:$('wishReserved').checked?'reserved':'wanted',d:$('wishDate').value,tm:$('wishTime').value,tp:$('wishType').value,o:getMF('wishOrganizer'),v:getMF('wishVenue'),c:[...wishSelectedComp],oc:$('wishOtherCompanions').value,p:$('wishParticipants').value,tb:$('wishTablemates').value,pr:$('wishPrice').value,ad:$('wishAdvance').checked,adt:$('wishAdvanceTo').value,u:$('wishUrl').value,sa:$('wishSaleAt').value,al:$('wishAlarmAt').value,su:$('wishSaleUrl').value,m:$('wishMemo').value,ph:wishPhotos.length})}
 function captureWishSnap(){_wishSnap=getWishSnap()}
 async function closeWishModal(force=false){if(!force&&_wishSnap&&getWishSnap()!==_wishSnap&&!await askConfirm('入力中の内容は保存されていません。閉じてもよろしいですか？','閉じる',true))return;_wishSnap='';$('wishModal').classList.remove('show')}
 const IMGQ={std:[1280,.8],small:[800,.6]};
@@ -1829,14 +1854,13 @@ $('wishPhoto').addEventListener('change',async e=>{let last='';for(const f of e.
 setImgQ(getImgQ());initXSettings();
 document.querySelectorAll('input[name="result"]').forEach(inp=>{const lb=inp.closest('label');lb.addEventListener('pointerdown',()=>{inp.dataset.was=inp.checked?'1':''});inp.addEventListener('click',()=>{if(inp.dataset.was==='1'){inp.checked=false;inp.dataset.was=''}})});
 
-function saveWish(){const title=$('wishTitle').value.trim();if(!title){toast('公演タイトルを入力してください');return}const id=$('wishEditId').value,w={id:id||uid(),title,status:$('wishStatus').value,date:$('wishDate').value,time:$('wishTime').value,eventType:$('wishType').value,organizer:getMF('wishOrganizer'),venue:getMF('wishVenue'),companions:[...wishSelectedComp],oneOffCompanions:parseNames($('wishOtherCompanions').value),participants:Number($('wishParticipants').value)||0,tablemates:Number($('wishTablemates').value)||0,url:$('wishUrl').value.trim(),price:$('wishPrice').value===''?'':Number($('wishPrice').value),advance:$('wishAdvance').checked,advanceTo:$('wishAdvance').checked?$('wishAdvanceTo').value.trim():'',saleAt:$('wishSaleAt').value,alarmAt:$('wishAlarmAt').value,saleUrl:$('wishSaleUrl').value.trim(),memo:$('wishMemo').value,photos:[...wishPhotos]};if(id)db.wishes=db.wishes.map(x=>x.id===id?w:x);else db.wishes.push(w);if(saveDB()){closeWishModal(true);renderWishes();renderDashboard();toast(id?'内容を更新しました':'公演を追加しました')}}
-function setWishFilter(filter,btn){wishFilter=filter;document.querySelectorAll('[data-wfilter]').forEach(b=>b.classList.toggle('active',b===btn));renderWishes()}
+function saveWish(){const title=$('wishTitle').value.trim();if(!title){toast('公演タイトルを入力してください');return}const id=$('wishEditId').value,w={id:id||uid(),title,status:$('wishReserved').checked?'reserved':'wanted',date:$('wishDate').value,time:$('wishTime').value,eventType:$('wishType').value,organizer:getMF('wishOrganizer'),venue:getMF('wishVenue'),companions:[...wishSelectedComp],oneOffCompanions:parseNames($('wishOtherCompanions').value),participants:Number($('wishParticipants').value)||0,tablemates:Number($('wishTablemates').value)||0,url:$('wishUrl').value.trim(),price:$('wishPrice').value===''?'':Number($('wishPrice').value),advance:$('wishAdvance').checked,advanceTo:$('wishAdvance').checked?$('wishAdvanceTo').value.trim():'',saleAt:$('wishSaleAt').value,alarmAt:$('wishAlarmAt').value,saleUrl:$('wishSaleUrl').value.trim(),memo:$('wishMemo').value,photos:[...wishPhotos]};if(id)db.wishes=db.wishes.map(x=>x.id===id?w:x);else db.wishes.push(w);if(saveDB()){closeWishModal(true);renderWishes();renderDashboard();toast(id?'内容を更新しました':'公演を追加しました')}}
 function setWishView(v,btn){wishView=v;document.querySelectorAll('[data-wish-view]').forEach(b=>b.classList.toggle('active',b===btn));renderWishes()}
-function renderWishes(){document.querySelectorAll('[data-wish-view]').forEach(b=>b.classList.toggle('active',b.dataset.wishView===wishView));const all=db.wishes||[],wsort=($('wishSort')&&$('wishSort').value)||'added',today=new Date().toLocaleDateString('sv-SE');let shown=all.filter(w=>wishFilter==='all'||w.status===wishFilter);if(wsort==='date')shown=[...shown].sort((a,b)=>(a.date||'9999-99-99').localeCompare(b.date||'9999-99-99')||(a.time||'99:99').localeCompare(b.time||'99:99'));else if(wsort==='sale')shown=[...shown].sort((a,b)=>(a.saleAt||'9999-99-99').localeCompare(b.saleAt||'9999-99-99'));else if(wsort==='price')shown=[...shown].sort((a,b)=>(Number(b.price)||-1)-(Number(a.price)||-1));$('wishAllCount').textContent=all.length;$('wantedCount').textContent=all.filter(w=>w.status==='wanted').length;$('reservedCount').textContent=all.filter(w=>w.status==='reserved').length;const target=$('wishAll');if(!shown.length){target.innerHTML='<div class="empty">登録はありません</div>';return}
-const isPast=w=>!!(w.date&&w.date<today),st=w=>w.status==='reserved'?'購入済み':'行きたい',badges=w=>`<span class="pill ${w.status}">${st(w)}</span>${isPast(w)?' <span class="pill past">開催済み</span>':''}`,comps=w=>[...new Set([...(w.companions||[]),...(w.oneOffCompanions||[])])],adv=w=>`立替${w.advanceTo?'：<span class="red">'+esc(w.advanceTo)+'</span>':''}`,when=w=>`${esc(w.date||'日程未定')}${w.time?' '+esc(w.time):''}`,
+function renderWishes(){document.querySelectorAll('[data-wish-view]').forEach(b=>b.classList.toggle('active',b.dataset.wishView===wishView));const all=db.wishes||[],wsort=($('wishSort')&&$('wishSort').value)||'added',today=new Date().toLocaleDateString('sv-SE');let shown=[...all];if(wsort==='date')shown.sort((a,b)=>(a.date||'9999-99-99').localeCompare(b.date||'9999-99-99')||(a.time||'99:99').localeCompare(b.time||'99:99'));else if(wsort==='sale')shown.sort((a,b)=>(a.saleAt||'9999-99-99').localeCompare(b.saleAt||'9999-99-99'));else if(wsort==='price')shown.sort((a,b)=>(Number(b.price)||-1)-(Number(a.price)||-1));const target=$('wishAll');if(!shown.length){target.innerHTML='<div class="empty">登録はありません</div>';return}
+const isPast=w=>!!(w.date&&w.date<today),badges=w=>[w.status==='reserved'?'<span class="pill reserved">購入済み</span>':'',isPast(w)?'<span class="pill past">開催済み</span>':''].filter(Boolean).join(' '),cardBadge=w=>isPast(w)?'<span class="pill past fc-badge">開催済み</span>':(w.status==='reserved'?'<span class="pill reserved fc-badge">購入済み</span>':''),comps=w=>[...new Set([...(w.companions||[]),...(w.oneOffCompanions||[])])],adv=w=>`立替${w.advanceTo?'：<span class="red">'+esc(w.advanceTo)+'</span>':''}`,when=w=>`${esc(w.date||'日程未定')}${w.time?' '+esc(w.time):''}`,
 rowMeta=w=>`<div class="meta">${when(w)}</div>${w.organizer?`<div class="meta">${esc(w.organizer)}</div>`:''}${comps(w).length?`<div class="meta">${nameList(comps(w))}</div>`:''}${w.saleAt?`<div class="meta red">チケット販売 ${esc(fmtDT(w.saleAt))}</div>`:''}${w.advance?`<div class="meta">${adv(w)}</div>`:''}`,
 cardMeta=w=>`<div>${when(w)}</div>${w.organizer?`<div>${esc(w.organizer)}</div>`:''}${w.saleAt?`<div class="red">チケット販売 ${esc(fmtDT(w.saleAt))}</div>`:''}${w.advance?`<div>${adv(w)}</div>`:''}`;
-target.innerHTML=wishView==='list'?`<div class="record-list">${shown.map(w=>`<article class="record-row record-clickable" role="button" tabindex="0" onclick="showWishDetail('${w.id}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();showWishDetail('${w.id}')}"><div class="thumb">${wishThumb(w)?`<img src="${wishThumb(w)}" alt="" loading="lazy" decoding="async">`:resIcon('')}</div><div class="record-main"><div class="record-title">${esc(w.title)}</div>${rowMeta(w)}<div>${badges(w)}</div></div></article>`).join('')}</div>`:`<div class="feature-list">${shown.map(w=>`<article class="feature-card wish" onclick="showWishDetail('${w.id}')"><div class="photo" ${wishThumb(w)?`style="background-image:url('${wishThumb(w)}')"`:''}></div><span class="pill ${isPast(w)?'past':w.status} fc-badge">${isPast(w)?'開催済み':st(w)}</span><div class="feature-info"><div class="feature-title">${esc(w.title)}</div><div class="feature-meta">${cardMeta(w)}</div></div></article>`).join('')}</div>`}
+target.innerHTML=wishView==='list'?`<div class="record-list">${shown.map(w=>{const b=badges(w);return `<article class="record-row"><div class="thumb">${wishThumb(w)?`<img src="${wishThumb(w)}" alt="" loading="lazy" decoding="async">`:resIcon('')}</div><div class="record-main"><div class="record-title title-tap" role="button" tabindex="0" onclick="showWishDetail('${w.id}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();showWishDetail('${w.id}')}">${esc(w.title)}</div>${rowMeta(w)}${b?`<div>${b}</div>`:''}</div></article>`}).join('')}</div>`:`<div class="feature-list">${shown.map(w=>`<article class="feature-card wish"><div class="photo" ${wishThumb(w)?`style="background-image:url('${wishThumb(w)}')"`:''}></div>${cardBadge(w)}<div class="feature-info"><div class="feature-title title-tap" role="button" tabindex="0" onclick="showWishDetail('${w.id}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();showWishDetail('${w.id}')}">${esc(w.title)}</div><div class="feature-meta">${cardMeta(w)}</div></div></article>`).join('')}</div>`}
 async function deleteWish(id){const w=db.wishes.find(x=>x.id===id);if(!w||!await askConfirm(`「${w.title}」を行きたいリストから削除しますか？`))return;const idx=db.wishes.findIndex(x=>x.id===id);db.wishes=db.wishes.filter(x=>x.id!==id);selectedWishes.delete(id);saveDB();closeWishModal(true);renderWishes();renderDashboard();showUndo('行きたい公演を削除しました',()=>{db.wishes.splice(Math.min(idx,db.wishes.length),0,w);saveDB();refreshAll()})}
 function deleteWishFromModal(){const id=$('wishEditId').value;if(id)deleteWish(id)}
 
@@ -1848,7 +1872,7 @@ function fillNums(id,from,blank){let h=blank?'<option value="">選択</option>':
 fillNums('participants',1,true);fillNums('tablemates',0,false);wheelInit('time');wheelInit('wishTime');fillNums('wishParticipants',1,true);fillNums('wishTablemates',0,false);$('wishType').innerHTML=$('eventType').innerHTML;
 $('date').value=new Date().toLocaleDateString('sv-SE');document.body.classList.add('home-active');renderDashboard();renderHistory();renderWishes();renderSettings();renderMasterSelects();renderCompanionChecks();renderStars();
 
-hFilter={ym:'',res:'',type:'',org:'',comp:''};
+hFilter={ym:'',res:'',type:'',comp:''};
 function histFiltered(arr){return arr.filter(x=>(!hFilter.ym||(hFilter.ym.endsWith('-00')?String(x.date||'').startsWith(hFilter.ym.slice(0,4)):String(x.date||'').slice(0,7)===hFilter.ym))&&(!hFilter.res||(hFilter.res==='none'?!x.result:x.result===hFilter.res))&&(!hFilter.type||x.eventType===hFilter.type)&&(!hFilter.org||x.organizer===hFilter.org)&&(!hFilter.comp||recNames(x).includes(hFilter.comp)))}
 function ymLabel(v){if(!v)return '';const m=/^(\d{4})-(\d{2})$/.exec(v);if(!m)return v;return m[2]==='00'?`${m[1]}年（通年）`:`${m[1]}年${Number(m[2])}月`}
 function refreshYmBtn(){const b=$('fYmBtn');if(!b)return;const v=$('fYm').value;b.textContent=v?ymLabel(v):'年月を選択（すべて）';b.classList.toggle('muted',!v)}
@@ -1891,21 +1915,19 @@ function closeYmPicker(){$('ymSheet').classList.remove('show')}
 const RES_LABELS={success:'脱出成功',fail:'脱出失敗',done:'完了',none:'結果未入力'};
 function openFilter(){
   const types=[...new Set(db.records.map(r=>r.eventType).filter(Boolean))],
-        orgs=[...new Set(db.records.map(r=>r.organizer).filter(Boolean))],
-        comps=[...new Set(db.records.flatMap(recNames).filter(Boolean))],
+        comps=[...new Set(db.companions||[])],
         opt=(arr,cur)=>'<option value="">すべて</option>'+arr.map(v=>`<option value="${esc(v)}"${v===cur?' selected':''}>${esc(v)}</option>`).join('');
   $('fYm').value=hFilter.ym;refreshYmBtn();
   $('fRes').value=hFilter.res;
   $('fType').innerHTML=opt(sortJa(types),hFilter.type);
-  $('fOrg').innerHTML=opt(sortJa(orgs),hFilter.org);
   $('fComp').innerHTML=opt(sortJa(comps),hFilter.comp);
   $('filterModal').classList.add('show');
 }
-function applyFilter(){hFilter={ym:$('fYm').value,res:$('fRes').value,type:$('fType').value,org:$('fOrg').value,comp:$('fComp').value};updateFilterBtn();renderHistory()}
-function clearFilter(){hFilter={ym:'',res:'',type:'',org:'',comp:''};openFilter();updateFilterBtn();renderHistory()}
+function applyFilter(){hFilter={ym:$('fYm').value,res:$('fRes').value,type:$('fType').value,comp:$('fComp').value};updateFilterBtn();renderHistory()}
+function clearFilter(){hFilter={ym:'',res:'',type:'',comp:''};openFilter();updateFilterBtn();renderHistory()}
 function removeFilter(k){hFilter[k]='';updateFilterBtn();renderHistory()}
 function updateFilterBtn(){const n=Object.values(hFilter).filter(Boolean).length,b=$('filterBtn');b.textContent=n?`絞り込み（${n}）`:'絞り込み';b.classList.toggle('on',n>0)}
-function renderFilterChips(count){const box=$('filterChips'),items=[['ym','年月',hFilter.ym&&ymLabel(hFilter.ym)],['res','結果',hFilter.res&&RES_LABELS[hFilter.res]],['type','類型',hFilter.type],['org','主催',hFilter.org],['comp','同行者',hFilter.comp]].filter(x=>x[2]);box.innerHTML=items.length?`<div class="fchips"><span class="fcount">絞り込み中 ${count}件</span>${items.map(([k,l,v])=>`<button type="button" class="fchip" onclick="removeFilter('${k}')">${l}：${esc(v)} ×</button>`).join('')}</div>`:''}
+function renderFilterChips(count){const box=$('filterChips'),items=[['ym','年月',hFilter.ym&&ymLabel(hFilter.ym)],['res','結果',hFilter.res&&RES_LABELS[hFilter.res]],['type','類型',hFilter.type],['comp','同行者',hFilter.comp]].filter(x=>x[2]);box.innerHTML=items.length?`<div class="fchips"><span class="fcount">絞り込み中 ${count}件</span>${items.map(([k,l,v])=>`<button type="button" class="fchip" onclick="removeFilter('${k}')">${l}：${esc(v)} ×</button>`).join('')}</div>`:''}
 updateFilterBtn();
 
 const THUMB_PX=360;
