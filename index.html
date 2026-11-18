@@ -1,7 +1,12 @@
 <!doctype html>
 <html lang="ja">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content="ESCAPE LOG"><link rel="apple-touch-icon" href="icon.png"><link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icon.png"><meta name="theme-color" content="#f4f5f7" id="themeColor"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700;800&family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet"><title>ESCAPE LOG</title>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content="ESCAPE LOG"><link rel="apple-touch-icon" href="icon.png"><link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icon.png"><meta name="theme-color" content="#f4f5f7" id="themeColor"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700;800&family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=JetBrains+Mono:wght@600;800&family=Plus+Jakarta+Sans:wght@600;800&family=Press+Start+2P&family=Space+Grotesk:wght@700&family=Zen+Kaku+Gothic+New:wght@500;700;900&display=swap" rel="stylesheet">
+<title>ESCAPE LOG</title>
+<script>
+try{document.documentElement.dataset.style=localStorage.getItem('escapeLogStyle')||'standard';}catch(e){document.documentElement.dataset.style='standard';}
+</script>
 <script>
 (function(){
   try{
@@ -321,7 +326,8 @@ body.reg-open .topbar,body.reg-open .bottomnav{display:none}
 #dashboard.active{
   display:flex;flex-direction:column;gap:14px;
   height:calc(100dvh - 166px - var(--safe-t) - var(--safe-b));
-  min-height:400px;
+  min-height:min(400px,calc(100dvh - 166px - var(--safe-t) - var(--safe-b)));
+  min-width:0;
 }
 #dashboard>.heading .sub{display:none}
 
@@ -643,6 +649,17 @@ html[data-theme="terminal"] .pill.wanted,html[data-theme="midnight"] .pill.wante
   color:var(--accent-ink);padding:0 10px;font-size:11.5px;font-weight:700;line-height:1;
 }
 
+
+/* Stage 3: statistics page layout only */
+.stats-group{display:grid;gap:10px;min-width:0}
+.stats-group-title{margin:2px 2px 0;font-size:13px;font-weight:850;letter-spacing:.04em;color:var(--muted)}
+.stats-group-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;min-width:0}
+.stats-panel-wide{width:100%;min-width:0}
+@media(max-width:760px){
+  .stats-group-grid{grid-template-columns:minmax(0,1fr);gap:12px}
+  .stats-group{gap:8px}
+}
+
 /* Stats Page */
 .stats-page-content{display:grid;gap:14px;padding-top:4px}
 .stats-overview{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
@@ -915,11 +932,12 @@ html[data-theme="terminal"] .pill.wanted,html[data-theme="midnight"] .pill.wante
   background:color-mix(in srgb,var(--brass) 22%,var(--surface));
   border-color:var(--brass);color:var(--brass);
 }
-.companion-chips{display:flex;flex-wrap:wrap;gap:8px}
+.companion-chips{display:flex;flex-wrap:wrap;gap:6px}
 .companion-chip{
-  min-height:44px;border:1px solid var(--line-strong);
+  min-height:34px;border:1px solid var(--line-strong);
   background:var(--surface);border-radius:99px;
-  padding:0 15px;font-size:13px;font-weight:700;color:var(--ink-2);
+  padding:0 12px;font-size:12px;font-weight:700;color:var(--ink-2);
+  line-height:1.2;
 }
 .companion-chip.selected{
   background:color-mix(in srgb,var(--accent) 14%,var(--surface));
@@ -939,7 +957,10 @@ html[data-theme="terminal"] .pill.wanted,html[data-theme="midnight"] .pill.wante
   box-shadow:var(--shadow-sm);
 }
 .segbtns{display:flex;gap:8px}
-.segbtns.wrap{flex-wrap:wrap}
+ .segbtns.wrap{flex-wrap:wrap}
+/* アラームのプリセットはラベルを折り返さず、横一列に収める */
+#alarmPresets{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px}
+#alarmPresets button{min-width:0;min-height:40px;padding:0 3px;font-size:clamp(10px,2.8vw,12px);white-space:nowrap;letter-spacing:-.03em}
 .segbtns button{
   flex:1;min-height:44px;padding:0 10px;
   border:1px solid var(--line-strong);border-radius:11px;
@@ -955,6 +976,8 @@ html[data-theme="terminal"] .pill.wanted,html[data-theme="midnight"] .pill.wante
   background:var(--surface);font-size:14px;font-weight:600;color:var(--ink);
 }
 .chk input{width:19px;height:19px;accent-color:var(--accent);margin:0;flex:none}
+.chk.plain{min-height:36px;padding:0;border:0;border-radius:0;background:transparent;gap:8px}
+.wish-check-options{display:flex;align-items:center;gap:24px;flex-wrap:wrap}
 .mf-other{margin-top:8px}
 .timebtn{text-align:left;color:var(--ink);font-weight:700;cursor:pointer}
 .timebtn.muted{color:var(--muted);font-weight:400}
@@ -1123,6 +1146,14 @@ html[data-theme="terminal"] .pill.wanted,html[data-theme="midnight"] .pill.wante
 .detail-label{font-size:12px;font-weight:700;color:var(--muted);margin-bottom:4px}
 .detail-value{font-size:14px;font-weight:600;line-height:1.65;white-space:pre-wrap;overflow-wrap:anywhere}
 .detail-value a{color:var(--accent-ink);font-weight:700}
+.private-memo-item .detail-label span{font-weight:500;color:var(--muted)}
+.private-memo-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:4px}
+.private-memo-heading .detail-label{margin:0;min-width:0}
+.private-record-memo{display:block;width:100%;min-height:104px;margin-top:6px;padding:11px 12px;border:1px solid var(--line);border-radius:12px;background:var(--surface, #fff);color:var(--text);font:inherit;font-size:14px;line-height:1.6;resize:vertical}
+.private-memo-actions{display:flex;justify-content:flex-end;margin-top:8px}
+.private-memo-toggle{display:inline-flex;align-items:center;gap:6px;flex:none;margin:0;padding:7px 11px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--accent-ink);font:inherit;font-size:12px;font-weight:700;cursor:pointer}
+.private-memo-content{margin-top:4px;font-size:14px;font-weight:600;line-height:1.65;white-space:pre-wrap;overflow-wrap:anywhere}
+.private-memo-content[hidden]{display:none}
 .detail-photos{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
 .detail-photos img{width:88px;height:88px;object-fit:cover;border-radius:12px;cursor:zoom-in;border:1px solid var(--line)}
 .photo-preview img,#wishPhotoPreview img{cursor:zoom-in}
@@ -1204,7 +1235,7 @@ html[data-theme="terminal"] .pill.wanted,html[data-theme="midnight"] .pill.wante
   .thumb{width:70px;height:70px}
 }
 @media(max-height:720px){
-  #dashboard.active{gap:14px}
+  #dashboard.active{gap:clamp(7px,1.8vh,14px)}
   #dashboard .stat{padding:13px 15px;min-height:96px}
   #dashboard .stat-num{margin-top:4px;font-size:30px}
   #dashboard .dashgrid>.panel{padding:12px}
@@ -1213,7 +1244,267 @@ html[data-theme="terminal"] .pill.wanted,html[data-theme="midnight"] .pill.wante
   .mini-row{min-height:44px;padding:5px 10px 5px 6px}
   .mini-thumb{height:80%;aspect-ratio:1/1;width:auto}
 }
+@media(max-width:720px) and (max-height:650px){
+  #dashboard.active{height:calc(100dvh - 150px - var(--safe-t) - var(--safe-b));gap:7px}
+  #dashboard .stat{min-height:78px;padding:9px 12px;border-radius:14px}
+  #dashboard .stat-label{font-size:10px}
+  #dashboard .stat-num{font-size:clamp(25px,6vw,32px);margin-top:2px}
+  #dashboard .stat-foot{font-size:10px;margin-top:2px}
+  #dashboard .dashgrid{grid-template-rows:minmax(0,1.8fr) minmax(0,1fr);gap:7px}
+  #dashboard .dashgrid>.panel{padding:9px;border-radius:14px}
+  #dashboard .panel-head h3{font-size:12px}
+  #dashboard .panel-head .iconbtn{min-height:30px;font-size:10px;padding:0 6px}
+  .mini-row{min-height:38px;padding:4px 6px;gap:6px}
+  .mini-title{font-size:11px}
+  .mini-meta{font-size:9px}
+}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* ===== UI Design Style Variations ===== */
+html[data-style="pixel"]{
+  --font-sans:"DotGothic16",monospace;
+  --font-mono:"Press Start 2P","DotGothic16",monospace;
+  --shadow-sm:3px 3px 0px var(--rule);
+  --shadow-md:4px 4px 0px var(--rule);
+  --shadow-lg:6px 6px 0px var(--rule);
+}
+html[data-style="pixel"] body,
+html[data-style="pixel"] #register.active,
+html[data-style="pixel"] .modalback.full,
+html[data-style="pixel"] .modal.full{
+  background-image:linear-gradient(to right,var(--line) 1px,transparent 1px),linear-gradient(to bottom,var(--line) 1px,transparent 1px);
+  background-size:16px 16px;
+}
+html[data-style="pixel"] .panel,
+html[data-style="pixel"] .master-box,
+html[data-style="pixel"] .stat,
+html[data-style="pixel"] .stat-mini,
+html[data-style="pixel"] .record-row,
+html[data-style="pixel"] .feature-card,
+html[data-style="pixel"] .mini-row,
+html[data-style="pixel"] .btn,
+html[data-style="pixel"] .iconbtn,
+html[data-style="pixel"] .field,
+html[data-style="pixel"] .formfield input:not([type=radio]):not([type=checkbox]),
+html[data-style="pixel"] .formfield select,
+html[data-style="pixel"] .formfield textarea,
+html[data-style="pixel"] .bottomnav,
+html[data-style="pixel"] .navbtn,
+html[data-style="pixel"] .modal,
+html[data-style="pixel"] .detail-item,
+html[data-style="pixel"] .swatch,
+html[data-style="pixel"] .swatch-chip,
+html[data-style="pixel"] .brandmark,
+html[data-style="pixel"] .h-ico,
+html[data-style="pixel"] .thumb,
+html[data-style="pixel"] .mini-thumb,
+html[data-style="pixel"] .switch,
+html[data-style="pixel"] .switch button,
+html[data-style="pixel"] .pill,
+html[data-style="pixel"] .style-card,
+html[data-style="pixel"] .settings-note-banner,
+html[data-style="pixel"] .topnote{
+  border-radius:0!important;
+}
+html[data-style="pixel"] .panel,
+html[data-style="pixel"] .master-box,
+html[data-style="pixel"] .stat,
+html[data-style="pixel"] .stat-mini,
+html[data-style="pixel"] .record-row,
+html[data-style="pixel"] .mini-row,
+html[data-style="pixel"] .btn,
+html[data-style="pixel"] .iconbtn,
+html[data-style="pixel"] .field,
+html[data-style="pixel"] .formfield input:not([type=radio]):not([type=checkbox]),
+html[data-style="pixel"] .formfield select,
+html[data-style="pixel"] .formfield textarea,
+html[data-style="pixel"] .bottomnav,
+html[data-style="pixel"] .modal,
+html[data-style="pixel"] .detail-item,
+html[data-style="pixel"] .style-card{
+  border:2px solid var(--rule)!important;
+}
+html[data-style="pixel"] .stat-num{font-size:clamp(22px,5.5vw,30px);letter-spacing:0}
+html[data-style="pixel"] .btn:active,
+html[data-style="pixel"] .iconbtn:active{transform:translate(2px,2px)!important;box-shadow:none!important}
+
+html[data-style="brutal"]{
+  --font-sans:"Zen Kaku Gothic New",sans-serif;
+  --font-mono:"Space Grotesk","Zen Kaku Gothic New",sans-serif;
+  --shadow-sm:3px 3px 0px var(--rule);
+  --shadow-md:5px 5px 0px var(--rule);
+  --shadow-lg:6px 6px 0px var(--rule);
+}
+html[data-style="brutal"] .panel,
+html[data-style="brutal"] .master-box,
+html[data-style="brutal"] .stat,
+html[data-style="brutal"] .stat-mini,
+html[data-style="brutal"] .record-row,
+html[data-style="brutal"] .feature-card,
+html[data-style="brutal"] .btn,
+html[data-style="brutal"] .iconbtn,
+html[data-style="brutal"] .field,
+html[data-style="brutal"] .formfield input:not([type=radio]):not([type=checkbox]),
+html[data-style="brutal"] .formfield select,
+html[data-style="brutal"] .formfield textarea,
+html[data-style="brutal"] .bottomnav,
+html[data-style="brutal"] .modal,
+html[data-style="brutal"] .detail-item,
+html[data-style="brutal"] .style-card{
+  border:2px solid var(--rule)!important;
+  border-radius:8px!important;
+}
+html[data-style="brutal"] .mini-row{
+  border:1.5px solid var(--rule)!important;
+  border-radius:6px!important;
+  box-shadow:2px 2px 0px var(--rule);
+}
+html[data-style="brutal"] .btn:active,
+html[data-style="brutal"] .iconbtn:active{
+  transform:translate(2px,2px)!important;
+  box-shadow:none!important;
+}
+
+html[data-style="cyber"]{
+  --font-mono:"JetBrains Mono",monospace;
+  --shadow-sm:0 0 12px color-mix(in srgb,var(--accent) 16%,transparent);
+  --shadow-md:0 0 20px color-mix(in srgb,var(--accent) 24%,transparent);
+  --shadow-lg:0 0 28px color-mix(in srgb,var(--accent) 30%,transparent);
+}
+html[data-style="cyber"] .panel,
+html[data-style="cyber"] .master-box,
+html[data-style="cyber"] .stat,
+html[data-style="cyber"] .stat-mini,
+html[data-style="cyber"] .record-row,
+html[data-style="cyber"] .bottomnav,
+html[data-style="cyber"] .modal,
+html[data-style="cyber"] .detail-item,
+html[data-style="cyber"] .style-card{
+  border:1px solid color-mix(in srgb,var(--accent) 45%,var(--line-strong))!important;
+  border-radius:6px!important;
+}
+html[data-style="cyber"] .mini-row,
+html[data-style="cyber"] .btn,
+html[data-style="cyber"] .iconbtn,
+html[data-style="cyber"] .field{
+  border-radius:6px!important;
+}
+html[data-style="cyber"] .stat-num{
+  text-shadow:0 0 14px color-mix(in srgb,var(--accent) 55%,transparent);
+}
+
+html[data-style="glass"]{
+  --font-sans:"Zen Kaku Gothic New",sans-serif;
+}
+html[data-style="glass"] .panel,
+html[data-style="glass"] .master-box,
+html[data-style="glass"] .stat,
+html[data-style="glass"] .stat-mini,
+html[data-style="glass"] .record-row,
+html[data-style="glass"] .modal,
+html[data-style="glass"] .detail-item,
+html[data-style="glass"] .style-card{
+  background:color-mix(in srgb,var(--surface) 78%,transparent)!important;
+  backdrop-filter:blur(14px) saturate(1.2);
+  -webkit-backdrop-filter:blur(14px) saturate(1.2);
+  border-radius:26px!important;
+  border:1px solid color-mix(in srgb,var(--ink) 12%,transparent)!important;
+}
+html[data-style="glass"] .mini-row,
+html[data-style="glass"] .btn,
+html[data-style="glass"] .iconbtn,
+html[data-style="glass"] .field{
+  border-radius:18px!important;
+}
+
+html[data-style="studio"]{
+  --font-sans:"Plus Jakarta Sans","Zen Kaku Gothic New",sans-serif;
+  --font-mono:"Plus Jakarta Sans",sans-serif;
+  --shadow-sm:none;
+  --shadow-md:none;
+}
+html[data-style="studio"] body,
+html[data-style="studio"] #register.active,
+html[data-style="studio"] .modalback.full,
+html[data-style="studio"] .modal.full{
+  background-image:none!important;
+}
+html[data-style="studio"] .panel,
+html[data-style="studio"] .master-box,
+html[data-style="studio"] .stat,
+html[data-style="studio"] .stat-mini,
+html[data-style="studio"] .record-row,
+html[data-style="studio"] .mini-row,
+html[data-style="studio"] .btn,
+html[data-style="studio"] .iconbtn,
+html[data-style="studio"] .field,
+html[data-style="studio"] .modal,
+html[data-style="studio"] .detail-item,
+html[data-style="studio"] .style-card{
+  border:1px solid var(--rule)!important;
+  border-radius:4px!important;
+  box-shadow:none!important;
+}
+html[data-style="studio"] .bottomnav{
+  border:1px solid var(--rule)!important;
+  border-radius:6px!important;
+}
+html[data-style="studio"] .eyebrow{
+  letter-spacing:.16em;
+  border-bottom:1px solid var(--line-strong);
+  padding-bottom:3px;
+  display:inline-block;
+}
+
+.style-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+.style-card{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:6px;
+  padding:13px 12px;
+  text-align:left;
+  background:var(--surface-2);
+  border:1.5px solid var(--line-strong);
+  border-radius:14px;
+  color:var(--ink);
+  transition:transform .14s,border-color .14s,background .14s;
+}
+.style-card:active{transform:scale(.97)}
+.style-card.on{
+  background:var(--surface);
+  border-color:var(--accent);
+  box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 20%,transparent);
+}
+.style-card-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  width:100%;
+  gap:6px;
+  font-size:13px;
+  font-weight:800;
+}
+.style-card-badge{
+  font-size:10.5px;
+  font-weight:800;
+  padding:2px 7px;
+  border-radius:99px;
+  background:var(--accent);
+  color:var(--on-accent);
+  display:none;
+  flex:none;
+}
+.style-card.on .style-card-badge{display:inline-block}
+.style-card-desc{
+  font-size:11.5px;
+  line-height:1.45;
+  color:var(--muted);
+}
 </style>
 </head>
 <body>
@@ -1298,7 +1589,7 @@ html[data-theme="terminal"] .pill.wanted,html[data-theme="midnight"] .pill.wante
     </div>
     <div class="toolbar history-toolbar">
       <div class="toolbar-row">
-        <input class="field search" id="historySearch" placeholder="公演名･団体･場所･＃で検索" oninput="debouncedHistory()">
+        <input class="field search" id="historySearch" placeholder="公演名･主催団体･会場･同行者･＃で検索" oninput="debouncedHistory()">
       </div>
       <div class="toolbar-row" style="justify-content:space-between;align-items:center">
         <div style="display:flex;align-items:center;gap:8px">
@@ -1345,6 +1636,7 @@ html[data-theme="terminal"] .pill.wanted,html[data-theme="midnight"] .pill.wante
           <div class="formfield"><label for="ticketPrice">チケット代（円）</label><input id="ticketPrice" type="number" inputmode="numeric" min="0" step="1" placeholder="例：3500"></div>
           <div class="formfield full"><label for="eventUrl">公演URL</label><input id="eventUrl" type="url" placeholder="https://..."><div class="hint" id="urlHint">URLは記録として保存できます。情報の自動取得は未接続です。</div></div>
           <div class="formfield full"><label for="comment">感想・メモ</label><textarea id="comment" placeholder="印象に残った謎、演出、感想など"></textarea></div>
+          <div class="formfield full"><label for="privateMemo">非公開メモ <span>（Xには投稿されません）</span></label><textarea id="privateMemo" class="private-record-memo" placeholder="自分だけが見返すメモを入力"></textarea></div>
           <div class="formfield full"><label for="hashtags">ハッシュタグ（X投稿用）</label><input id="hashtags" placeholder="例：#謎解き #脱出ゲーム" autocomplete="off"><div class="hint">スペースか読点で区切って入力します。詳細画面のXボタンから投稿画面を開くと、ここのタグが入ります。</div></div>
           <div class="formfield full"><label for="photos">写真・スクリーンショット（複数可）</label><input id="photos" type="file" accept="image/*" multiple class="field"><div class="hint imgq-note"></div><div class="photo-preview" id="photoPreview"></div></div>
         </div>
@@ -1397,7 +1689,10 @@ html[data-theme="terminal"] .pill.wanted,html[data-theme="midnight"] .pill.wante
     </div>
     <div class="master-grid">
       <section class="master-box theme-box">
-        <h3><svg class="ic" aria-hidden="true"><use href="#i-palette"/></svg>テーマカラー</h3>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-bottom:14px">
+          <h3 style="margin:0"><svg class="ic" aria-hidden="true"><use href="#i-palette"/></svg>テーマカラー</h3>
+          <button type="button" class="btn light small" onclick="openStyleModal()" id="openStyleModalBtn">スタイル選択：<span id="currentStyleLabel">スタンダード</span></button>
+        </div>
         <div class="theme-picker" id="themePicker" role="group" aria-label="テーマカラー"></div>
         <div class="custom-theme-editor" id="customThemeEditor" hidden>
           <div class="cte-fields">
@@ -1452,6 +1747,7 @@ html[data-theme="terminal"] .pill.wanted,html[data-theme="midnight"] .pill.wante
         <h3><svg class="ic" aria-hidden="true"><use href="#i-image"/></svg>画像の圧縮（初期設定）</h3>
         <div class="segbtns" id="imgQSeg" role="group" aria-label="画像の圧縮"><button type="button" data-v="std" onclick="setImgQ('std')">標準</button><button type="button" data-v="small" onclick="setImgQ('small')">強く圧縮</button><button type="button" data-v="none" onclick="setImgQ('none')">圧縮しない</button></div>
         <p class="hint" style="margin-top:12px">標準は長辺1280px、強く圧縮は長辺800px（容量重視）に縮小して保存します。圧縮しない場合は元の画質のまま保存します（容量を多く使います）。写真を追加するときに適用され、追加済みの写真は変わりません。</p>
+        <p class="hint" id="storageUsage" style="margin-top:10px">ブラウザの保存容量を確認しています…</p>
       </section>
 
       <section class="master-box">
@@ -1512,7 +1808,6 @@ html[data-theme="terminal"] .pill.wanted,html[data-theme="midnight"] .pill.wante
       <input type="hidden" id="wishEditId">
       <div class="formgrid">
         <div class="formfield full"><label for="wishTitle">公演タイトル <span class="req">*</span></label><input id="wishTitle" class="field" required placeholder="公演タイトルを入力"></div>
-        <div class="formfield full"><label>チケット購入状況</label><label class="chk"><input type="checkbox" id="wishReserved"><span>購入済み</span></label></div>
         <div class="formfield"><label for="wishDate">参加予定日</label><input id="wishDate" type="date"></div>
         <div class="formfield"><label for="wishTimeBtn">参加予定時刻</label><input type="hidden" id="wishTime"><button type="button" class="field timebtn muted" id="wishTimeBtn" onclick="openTimePicker('wishTime')">時刻を選択</button></div>
         <div class="formfield"><label for="wishType">公演類型</label><select id="wishType"></select></div>
@@ -1522,7 +1817,7 @@ html[data-theme="terminal"] .pill.wanted,html[data-theme="midnight"] .pill.wante
         <div class="formfield"><label for="wishParticipants">参加予定人数</label><select id="wishParticipants"></select></div>
         <div class="formfield"><label for="wishTablemates">知らない同卓者の人数（予定）</label><select id="wishTablemates"></select></div>
         <div class="formfield"><label for="wishPrice">チケット代（円）</label><input id="wishPrice" type="number" inputmode="numeric" min="0" step="1" placeholder="例：3500"></div>
-        <div class="formfield"><label for="wishAdvance">立替</label><label class="chk"><input type="checkbox" id="wishAdvance" onchange="toggleAdvance()"><span>立替あり</span></label></div>
+        <div class="formfield full"><div class="wish-check-options"><label class="chk plain"><input type="checkbox" id="wishReserved"><span>購入済み</span></label><label class="chk plain"><input type="checkbox" id="wishAdvance" onchange="toggleAdvance()"><span>立替あり</span></label></div></div>
         <div class="formfield full" id="wishAdvanceWrap" hidden><label for="wishAdvanceTo">相手</label><input id="wishAdvanceTo" placeholder="立替の相手の名前"></div>
         <div class="formfield full"><label for="wishUrl">公演URL</label><input id="wishUrl" type="url" placeholder="https://..."></div>
         <div class="formfield full"><label for="wishSaleAt">チケット発売日時</label><input id="wishSaleAt" type="datetime-local" step="300"></div>
@@ -1564,6 +1859,26 @@ html[data-theme="terminal"] .pill.wanted,html[data-theme="midnight"] .pill.wante
       </div>
     </div>
     <div class="form-actions"><button class="btn light" onclick="clearFilter()">条件をクリア</button><button class="btn" onclick="closeFilter()">表示する</button></div>
+  </div>
+</div>
+
+<!-- Design Style Modal -->
+<div class="modalback" id="styleModal" role="dialog" aria-modal="true" aria-labelledby="styleModalTitle" onclick="if(event.target===this)closeStyleModal()">
+  <div class="modal">
+    <div class="detail-head">
+      <div>
+        <div class="eyebrow">UI APPEARANCE</div>
+        <h2 id="styleModalTitle">デザインスタイル選択</h2>
+      </div>
+      <button type="button" class="iconbtn" onclick="closeStyleModal()">閉じる</button>
+    </div>
+    <div class="dm-body">
+      <p class="hint" style="margin:0 0 12px">書体・角丸・枠線・影の質感を6種類から切り替えられます。テーマカラーとの組み合わせも自由です。</p>
+      <div class="style-grid" id="stylePickerGrid" role="group" aria-label="デザインスタイル"></div>
+    </div>
+    <div class="form-actions">
+      <button type="button" class="btn" onclick="closeStyleModal()">完了</button>
+    </div>
   </div>
 </div>
 
@@ -1610,7 +1925,12 @@ html[data-theme="terminal"] .pill.wanted,html[data-theme="midnight"] .pill.wante
 'use strict';
 let pendingWishId='',detailWishId='',wishPhotos=[],wishSelectedComp=new Set();const KEY='escapeLogPrototypeV1';
 const blankDB=()=>({records:[],wishes:[],companions:[],organizers:[],venues:[],draft:null});
-function loadDB(){try{const v=window.__BOOT_DB;return {...blankDB(),...(v||{})}}catch(e){return blankDB()}}
+let storageBlocked=!!window.__BOOT_ERROR;
+function loadDB(){
+  if(storageBlocked)return blankDB();
+  const v=window.__BOOT_DB;
+  return {...blankDB(),...(v||{})};
+}
 let db=loadDB(),currentPage='dashboard',currentView='list',wishView='list',rating=3,newPhotos=[],wishPhotoData='',selectedWishes=new Set(),calDate=new Date(),wishFilter='all';
 const $=id=>document.getElementById(id);const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,8);
 function esc(s=''){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
@@ -1619,9 +1939,72 @@ function askDialog(o){return new Promise(res=>{const bk=$('dialogBack'),ok=$('dl
 const askConfirm=(m,ok='削除する',danger=true)=>askDialog({message:m,okLabel:ok,danger});
 const askText=(m,ph='')=>askDialog({message:m,input:true,placeholder:ph,okLabel:'追加'});
 let storageWarned=false;let idbTimer=null;
-function flushDB(){clearTimeout(idbTimer);idbTimer=null;if(!window.__IDB)return Promise.resolve();return window.idbPut('db',db).catch(err=>{if(err&&err.name==='AbortError')return;toast('保存に失敗しました。端末の空き容量を確認してください')})}
-window.addEventListener('pagehide',()=>{flushDB()});document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')flushDB()});
-function saveDB(){setTimeout(ensureThumbs,400);if(window.__IDB){clearTimeout(idbTimer);idbTimer=setTimeout(flushDB,150);return true}try{localStorage.setItem(KEY,JSON.stringify(db));return true}catch(e){if(e&&(e.name==='QuotaExceededError'||e.code===22||e.code===1014)){toast('保存容量を超えました。写真を圧縮するか減らしてください。');return false}if(!storageWarned){storageWarned=true;toast('この環境では端末に保存できません。閉じるとデータが消えます')}return true}}
+let dbWriteQueue=Promise.resolve();
+let dbChangeQueue=Promise.resolve();
+function storageErrorMessage(err){
+  if(err&&(err.name==='QuotaExceededError'||err.code===22||err.code===1014))return '保存容量を超えました。写真を圧縮するか減らしてください。';
+  return 'データを保存できませんでした。端末の空き容量やブラウザの設定を確認してください。';
+}
+function reportAppError(err,message){
+  console.error('[ESCAPE LOG]',err);
+  toast(message||storageErrorMessage(err));
+}
+function snapshotDB(){return JSON.parse(JSON.stringify(db))}
+function safeStorageGet(key,fallback=''){
+  try{const value=localStorage.getItem(key);return value===null?fallback:value}
+  catch(err){return fallback}
+}
+function safeStorageSet(key,value,notify=false){
+  try{localStorage.setItem(key,value);return true}
+  catch(err){if(notify)reportAppError(err,'設定を保存できませんでした。ブラウザの保存領域を確認してください。');return false}
+}
+function safeStorageRemove(key){
+  try{localStorage.removeItem(key);return true}
+  catch(err){reportAppError(err,'保存データを整理できませんでした。');return false}
+}
+function enqueueDBWrite(snapshot){
+  const write=()=>window.__IDB?window.idbPut('db',snapshot):localStorage.setItem(KEY,JSON.stringify(snapshot));
+  const task=dbWriteQueue.catch(()=>{}).then(write);
+  dbWriteQueue=task.then(()=>undefined,()=>undefined);
+  return task;
+}
+function commitDBChange(change){
+  const task=dbChangeQueue.catch(()=>{}).then(async()=>{
+    if(storageBlocked){reportAppError(new Error('保存データを読み込めていません'),'保存データを読み込めていないため、変更を保存できません。元データを確認してください。');return false}
+    let previous;
+    try{
+      previous=snapshotDB();
+      change();
+      await enqueueDBWrite(snapshotDB());
+      return true;
+    }catch(err){
+      if(previous)db=previous;
+      reportAppError(err);
+      return false;
+    }
+  });
+  dbChangeQueue=task.then(()=>undefined,()=>undefined);
+  return task;
+}
+async function flushDB(){
+  clearTimeout(idbTimer);idbTimer=null;
+  if(storageBlocked)throw new Error('保存データを読み込めていないため、書き込みを停止しています。');
+  await dbChangeQueue.catch(()=>{});
+  return enqueueDBWrite(snapshotDB());
+}
+window.addEventListener('pagehide',()=>{flushDB().catch(()=>{})});
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')flushDB().catch(()=>{})});
+function saveDB(){
+  if(storageBlocked)return false;
+  setTimeout(ensureThumbs,400);
+  clearTimeout(idbTimer);
+  idbTimer=setTimeout(()=>{flushDB().catch(err=>reportAppError(err))},150);
+  return true;
+}
+async function persistDB(){
+  try{await flushDB();return true}
+  catch(err){reportAppError(err);return false}
+}
 function toast(msg){const el=$('toast');el.textContent=msg;el.classList.add('show');clearTimeout(toast.timer);toast.timer=setTimeout(()=>el.classList.remove('show'),2300)}
 
 function setRegHeading(text){
@@ -1682,7 +2065,7 @@ function miniRow(x,type){
 }
 
 function setView(v,btn){if(v==='calendar')return;currentView=v;document.querySelectorAll('[data-view]').forEach(b=>b.classList.toggle('active',b===btn));renderHistory()}
-function renderHistory(){const q=($('historySearch').value||'').toLowerCase(),sort=$('sortOrder').value;let arr=histFiltered(db.records).filter(x=>[x.title,x.organizer,x.venue,x.hashtags].join(' ').toLowerCase().includes(q)).sort((a,b)=>sort==='asc'?(a.date+(a.time||'')).localeCompare(b.date+(b.time||'')):sort==='rating'?(Number(b.rating)||0)-(Number(a.rating)||0)||(b.date||'').localeCompare(a.date||''):sort==='price'?(Number(b.price)||-1)-(Number(a.price)||-1)||(b.date||'').localeCompare(a.date||''):(b.date+(b.time||'')).localeCompare(a.date+(a.time||'')));const el=$('historyContent');renderFilterChips(arr.length);if(!arr.length){el.innerHTML=`<div class="empty">${db.records.length?'条件に合う参加記録はありません。':'参加記録はまだありません。'}</div>`;stripOrphanBraceText(el);return}if(currentView==='list'){el.innerHTML=`<div class="record-list">${arr.map(recordRow).join('')}</div>`}else{el.innerHTML=`<div class="feature-list">${arr.map(x=>`<article class="feature-card"><div class="photo" ${recThumb(x)?`style="background-image:url('${recThumb(x)}')"`:''}></div><span class="pill ${x.result==='success'?'success':x.result==='fail'?'fail':x.result==='done'?'done':'none'} fc-badge">${resText(x.result)}</span><div class="feature-info"><div class="feature-title title-tap" role="button" tabindex="0" onclick="showRecordDetail('${x.id}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();showRecordDetail('${x.id}')}">${esc(x.title)}</div><div class="feature-meta"><div>${esc(x.date||'日程未定')}${x.time?' '+esc(x.time):''}</div>${x.organizer?`<div>${esc(x.organizer)}</div>`:''}</div></div></article>`).join('')}</div>`}stripOrphanBraceText(el)}
+function renderHistory(){const q=($('historySearch').value||'').trim().toLocaleLowerCase('ja-JP'),sort=$('sortOrder').value;let arr=histFiltered(db.records).filter(x=>[x.title,x.organizer,x.venue,x.hashtags,...recNames(x)].join(' ').toLocaleLowerCase('ja-JP').includes(q)).sort((a,b)=>sort==='asc'?(a.date+(a.time||'')).localeCompare(b.date+(b.time||'')):sort==='rating'?(Number(b.rating)||0)-(Number(a.rating)||0)||(b.date||'').localeCompare(a.date||''):sort==='price'?(Number(b.price)||-1)-(Number(a.price)||-1)||(b.date||'').localeCompare(a.date||''):(b.date+(b.time||'')).localeCompare(a.date+(a.time||'')));const el=$('historyContent');renderFilterChips(arr.length);if(!arr.length){el.innerHTML=`<div class="empty">${db.records.length?'条件に合う参加記録はありません。':'参加記録はまだありません。'}</div>`;stripOrphanBraceText(el);return}if(currentView==='list'){el.innerHTML=`<div class="record-list">${arr.map(recordRow).join('')}</div>`}else{el.innerHTML=`<div class="feature-list">${arr.map(x=>`<article class="feature-card"><div class="photo" ${recThumb(x)?`style="background-image:url('${recThumb(x)}')"`:''}></div><span class="pill ${x.result==='success'?'success':x.result==='fail'?'fail':x.result==='done'?'done':'none'} fc-badge">${resText(x.result)}</span><div class="feature-info"><div class="feature-title title-tap" role="button" tabindex="0" onclick="showRecordDetail('${x.id}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();showRecordDetail('${x.id}')}">${esc(x.title)}</div><div class="feature-meta"><div>${esc(x.date||'日程未定')}${x.time?' '+esc(x.time):''}</div>${x.organizer?`<div>${esc(x.organizer)}</div>`:''}</div></div></article>`).join('')}</div>`}stripOrphanBraceText(el)}
 function recordRow(x){const img=recThumb(x);return `<article class="record-row"><div class="thumb">${img?`<img src="${img}" alt="" loading="lazy" decoding="async">`:resIcon(x.result)}</div><div class="record-main"><div class="record-title title-tap" role="button" tabindex="0" onclick="showRecordDetail('${x.id}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();showRecordDetail('${x.id}')}">${esc(x.title)}</div><div class="meta">${esc(x.date)} ${esc(x.time||'')}</div><div class="meta">${esc(x.organizer||'主催未登録')}</div>${[...(x.companions||[]),...(x.oneOffCompanions||[])].length?`<div class="meta">${nameList([...(x.companions||[]),...(x.oneOffCompanions||[])])}</div>`:''}<span class="pill ${x.result==='success'?'success':x.result==='fail'?'fail':x.result==='done'?'done':'none'}">${x.result==='success'?rIco('success')+'脱出成功':x.result==='fail'?rIco('fail')+'脱出失敗':x.result==='done'?rIco('done')+'完了':'結果未入力'}</span> ${x.rating?`<span class="rstars">${'★'.repeat(x.rating)}</span>`:''}</div></article>` }
 
 function renderStats(){const records=db.records||[],total=records.length,success=records.filter(r=>r.result==='success').length,failed=records.filter(r=>r.result==='fail').length,rated=success+failed,rate=rated?Math.round(success/rated*100):0,avg=records.filter(r=>Number(r.rating)>0);const ratings=avg.length?(avg.reduce((a,r)=>a+Number(r.rating),0)/avg.length).toFixed(1):'—';const priced=records.filter(r=>r.price!==''&&r.price!==undefined&&Number(r.price)>=0);const totalCost=priced.reduce((a,r)=>a+Number(r.price),0);const avgCost=priced.length?Math.round(totalCost/priced.length):0;$('statsContent').innerHTML=`<div class="stats-overview"><div class="stat-mini"><span>参加公演数</span><strong>${total}</strong></div><div class="stat-mini"><span>脱出成功率</span><strong>${rated?rate+'%':'—'}</strong></div><div class="stat-mini"><span>平均満足度</span><strong>${ratings}${ratings!=='—'?'<small>/5</small>':''}</strong></div><div class="stat-mini sf"><span>成功 / 失敗</span><strong>${success} / ${failed}</strong></div><div class="stat-mini stat-cost"><span>累計チケット代</span><strong>${priced.length?'¥'+totalCost.toLocaleString('ja-JP'):'—'}</strong></div><div class="stat-mini stat-cost"><span>平均チケット代</span><strong>${priced.length?'¥'+avgCost.toLocaleString('ja-JP'):'—'}</strong></div></div><div class="stats-panels">${statsPanels(records)}</div>`}
@@ -1705,7 +2088,7 @@ const typeRateRows=rateTally(records,r=>r.eventType||'未設定'),allOrgRateRows
 const expCtrl=(key,rows,baseSmall)=>rows.length>5?`<button type="button" class="iconbtn" style="min-height:24px;padding:0 8px;font-size:11px" aria-expanded="${!!statsExpand[key]}" onclick="toggleStatsExpand('${key}',event)">${statsExpand[key]?'上位5件に戻す':'すべて見る'}</button>`:`<small>${baseSmall}</small>`;
 const tp=(key,title,small,rows,empty,limit,rank)=>{const pie=statsView[key]==='pie',canExp=limit>0&&!pie&&rows.length>limit,exp=canExp&&statsExpand[key],shown=(limit&&!exp)?rows.slice(0,limit):rows,sub=(limit&&!pie)?expCtrl(key,rows,small):`<small>${small}</small>`,tapAttr=canExp?` role="button" tabindex="0" aria-expanded="${!!statsExpand[key]}" onclick="toggleStatsExpand('${key}',event)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleStatsExpand('${key}',event)}" style="cursor:pointer"`:'';return `<section class="panel"${tapAttr}><div class="panel-head"><h3>${title}</h3><span class="ph-right">${sub}<span class="switch" role="group" aria-label="グラフ形式切替"><button type="button" class="${!pie?'active':''}" onclick="setStatsViewMode('${key}','bar',event)" style="min-height:24px;padding:0 8px;font-size:11px">棒</button><button type="button" class="${pie?'active':''}" onclick="setStatsViewMode('${key}','pie',event)" style="min-height:24px;padding:0 8px;font-size:11px">円</button></span></span></div>${pie?pieChart(rows,empty):barList(shown,empty,rank)}</section>`};
 const orgRateCanExp=allOrgRateRows.length>5,orgRateRows=(orgRateCanExp&&statsExpand.orgRate)?allOrgRateRows:allOrgRateRows.slice(0,5),orgRateTap=orgRateCanExp?` role="button" tabindex="0" aria-expanded="${!!statsExpand.orgRate}" onclick="toggleStatsExpand('orgRate',event)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleStatsExpand('orgRate',event)}" style="cursor:pointer"`:'';
-return `<section class="panel"><div class="panel-head"><h3>年別参加数</h3><small>タップで月別</small></div>${yearHtml}</section>`+tp('type','類型別参加数','ホール・ルームなど',typeRows,'まだデータがありません',0,false)+tp('org','主催団体別参加数','上位5団体',orgRows,'主催団体の記録がありません',5,false)+tp('comp','同行回数','上位5名',compRows,'同行者の記録がありません',5,true)+`<section class="panel"><div class="panel-head"><h3>類型別 脱出成功率</h3><small>成功 / 勝敗記録</small></div>${rateBarList(typeRateRows,'勝敗の記録がまだありません')}</section>`+`<section class="panel"${orgRateTap}><div class="panel-head"><h3>主催団体別 脱出成功率</h3>${expCtrl('orgRate',allOrgRateRows,'参加数上位5団体')}</div>${rateBarList(orgRateRows,'勝敗の記録がまだありません')}</section>`}
+return `<div class="stats-group stats-group-trend"><h3 class="stats-group-title">参加の推移</h3><section class="panel stats-panel-wide"><div class="panel-head"><h3>年別参加数</h3><small>タップで月別</small></div>${yearHtml}</section></div><div class="stats-group"><h3 class="stats-group-title">参加の内訳</h3><div class="stats-group-grid">`+tp('type','類型別参加数','ホール・ルームなど',typeRows,'まだデータがありません',0,false)+tp('org','主催団体別参加数','上位5団体',orgRows,'主催団体の記録がありません',5,false)+tp('comp','同行回数','上位5名',compRows,'同行者の記録がありません',5,true)+`</div></div><div class="stats-group"><h3 class="stats-group-title">脱出結果の傾向</h3><div class="stats-group-grid"><section class="panel"><div class="panel-head"><h3>類型別 脱出成功率</h3><small>成功 / 勝敗記録</small></div>${rateBarList(typeRateRows,'勝敗の記録がまだありません')}</section>`+`<section class="panel"${orgRateTap}><div class="panel-head"><h3>主催団体別 脱出成功率</h3>${expCtrl('orgRate',allOrgRateRows,'参加数上位5団体')}</div>${rateBarList(orgRateRows,'勝敗の記録がまだありません')}</section></div></div>`}
 
 function renderMasterSelects(){for(const [key,id,label] of [['organizers','organizer','主催団体'],['venues','venue','会場'],['organizers','wishOrganizer','主催団体'],['venues','wishVenue','会場']]){const el=$(id),old=el.value;el.innerHTML=`<option value="">${label}を選択</option>`+sortJa(db[key]||[]).map(v=>`<option value="${esc(v)}">${esc(v)}</option>`).join('')+'<option value="__other">その他（都度入力）</option>';if(old&&(old==='__other'||db[key].includes(old)))el.value=old;syncMF(id)}}
 function syncMF(id){const o=$(id+'Other');if(o)o.hidden=$(id).value!=='__other'}
@@ -1718,30 +2101,109 @@ function toggleCompanion(encoded){const c=decodeURIComponent(encoded);selectedCo
 function toggleOtherCompanion(){$('otherCompanionWrap').classList.toggle('show');if($('otherCompanionWrap').classList.contains('show'))$('otherCompanionName').focus();else{otherCompanions=[];$('otherCompanionName').value=''}}
 function addOtherCompanion(){const raw=$('otherCompanionName').value.trim();otherCompanions=raw?raw.split(/[、,，]/).map(x=>x.trim()).filter(Boolean):[];toast(otherCompanions.length?`今回の同行者を${otherCompanions.length}名追加しました`:'入力をクリアしました')}
 $('otherCompanionName').addEventListener('input',e=>{otherCompanions=e.target.value?e.target.value.split(/[、,，]/).map(x=>x.trim()).filter(Boolean):[]})
-function currentForm(){return {title:$('title').value,date:$('date').value,time:$('time').value,result:document.querySelector('input[name="result"]:checked')?.value||'',eventType:$('eventType').value,rating,organizer:getMF('organizer'),venue:getMF('venue'),companions:[...selectedCompanions],oneOffCompanions:[...otherCompanions],tablemates:Math.max(0,Number($('tablemates').value)||0),participants:Math.max(0,Number($('participants').value)||0),url:$('eventUrl').value,comment:$('comment').value,price:$('ticketPrice').value===''?'':Number($('ticketPrice').value),hashtags:$('hashtags').value.trim(),photos:newPhotos}}
-function resetForm(){ const fg=document.querySelector('#recordForm .formgrid');if(fg)fg.scrollTop=0;pendingWishId='';$('recordForm').reset();$('time').value='';$('hashtags').value=getXTags();syncMF('organizer');syncMF('venue');['time','participants','tablemates'].forEach(id=>$(id).querySelectorAll('[data-extra]').forEach(o=>o.remove()));selectedCompanions.clear();otherCompanions=[];$('editId').value='';$('tablemates').value='0';$('participants').value='';setRegHeading('行ってきた公演の追加');rating=3;newPhotos=[];renderStars();$('photoPreview').innerHTML='';renderMasterSelects();renderCompanionChecks();$('date').value=new Date().toLocaleDateString('sv-SE');}
+function currentForm(){return {title:$('title').value,date:$('date').value,time:$('time').value,result:document.querySelector('input[name="result"]:checked')?.value||'',eventType:$('eventType').value,rating,organizer:getMF('organizer'),venue:getMF('venue'),companions:[...selectedCompanions],oneOffCompanions:[...otherCompanions],tablemates:Math.max(0,Number($('tablemates').value)||0),participants:Math.max(0,Number($('participants').value)||0),url:$('eventUrl').value,comment:$('comment').value,price:$('ticketPrice').value===''?'':Number($('ticketPrice').value),hashtags:$('hashtags').value.trim(),privateMemo:$('privateMemo').value,photos:newPhotos}}
+function resetForm(){ const fg=document.querySelector('#recordForm .formgrid');if(fg)fg.scrollTop=0;pendingWishId='';$('recordForm').reset();$('time').value='';$('privateMemo').value='';$('hashtags').value=getXTags();syncMF('organizer');syncMF('venue');['time','participants','tablemates'].forEach(id=>$(id).querySelectorAll('[data-extra]').forEach(o=>o.remove()));selectedCompanions.clear();otherCompanions=[];$('editId').value='';$('tablemates').value='0';$('participants').value='';setRegHeading('行ってきた公演の追加');rating=3;newPhotos=[];renderStars();$('photoPreview').innerHTML='';renderMasterSelects();renderCompanionChecks();$('date').value=new Date().toLocaleDateString('sv-SE');}
 function renderStars(){document.querySelectorAll('.star').forEach(b=>b.classList.toggle('on',Number(b.dataset.star)<=rating))}document.querySelectorAll('.star').forEach(b=>b.addEventListener('click',()=>{rating=Number(b.dataset.star);renderStars()}));
 function renderPhotoPreview(){$('photoPreview').innerHTML=newPhotos.map((p,i)=>`<div class="photo-wrap"><img src="${p}" alt="添付した写真"><button type="button" aria-label="写真を削除" onclick="removePhoto(${i})">×</button></div>`).join('')}
 async function removePhoto(i){if(!await askConfirm('この写真を削除しますか？'))return;newPhotos.splice(i,1);renderPhotoPreview()}
 
-async function saveRecord(e){e.preventDefault();const v=currentForm();if(!v.title.trim()||!v.date||!v.eventType||!v.organizer){toast('必須項目（*）を入力してください');return}const id=$('editId').value;if(id){const idx=db.records.findIndex(x=>x.id===id);if(idx>=0)db.records[idx]={...db.records[idx],...v,id}}else{const dup=db.records.some(x=>x.title.trim()===v.title.trim()&&x.date===v.date);if(dup&&!await askConfirm('同じ公演名・参加日の記録があります。重複して登録しますか？','登録する',false))return;db.records.push({id:uid(),...v})}if(saveDB()){const wid=pendingWishId;toast(id?'記録を更新しました':'参加記録を保存しました');resetForm();go('history');if(!id&&wid&&db.wishes.some(x=>x.id===wid)&&await askConfirm('この公演を「行きたい公演」リストから外しますか？','外す',false)){db.wishes=db.wishes.filter(x=>x.id!==wid);saveDB();renderWishes();renderDashboard()}}}
-function editRecord(id){const x=db.records.find(r=>r.id===id);if(!x)return;resetForm();go('register');$('editId').value=x.id;$('topPageTitle').textContent='EDIT LOG';setRegHeading('参加記録を編集');for(const k of ['title','date','time','eventUrl','comment'])$(k).value=x[k==='eventUrl'?'url':k]||'';$('eventType').value=x.eventType||'';$('ticketPrice').value=x.price??'';$('hashtags').value=x.hashtags||'';const r=document.querySelector(`input[name="result"][value="${x.result}"]`);if(r)r.checked=true;rating=Number(x.rating)||0;renderStars();renderMasterSelects();setMF('organizer',x.organizer||'');setMF('venue',x.venue||'');newPhotos=x.photos||[];renderPhotoPreview();renderCompanionChecks([...(x.companions||[]),...(x.oneOffCompanions||[])]);for(const [id,v] of [['tablemates',Number(x.tablemates)||0],['participants',x.participants||'']]){const el=$(id);if(v!==''&&![...el.options].some(o=>o.value==String(v))){const o=new Option(v,v);o.dataset.extra=1;el.add(o)}el.value=v}captureRecSnap()}
+async function saveRecord(e){
+  e.preventDefault();
+  const v=currentForm();
+  if(!v.title.trim()||!v.date||!v.eventType||!v.organizer){toast('必須項目（*）を入力してください');return}
+  const id=$('editId').value;
+  if(id&&!db.records.some(x=>x.id===id)){toast('更新する記録が見つかりません');return}
+  if(!id){
+    const dup=db.records.some(x=>x.title.trim()===v.title.trim()&&x.date===v.date);
+    if(dup&&!await askConfirm('同じ公演名・参加日の記録があります。重複して登録しますか？','登録する',false))return;
+  }
+  const wid=pendingWishId;
+  const saved=await commitDBChange(()=>{
+    if(id){const idx=db.records.findIndex(x=>x.id===id);db.records[idx]={...db.records[idx],...v,id}}
+    else db.records.push({id:uid(),...v});
+  });
+  if(!saved)return;
+  toast(id?'記録を更新しました':'参加記録を保存しました');
+  resetForm();go('history');
+  if(!id&&wid&&db.wishes.some(x=>x.id===wid)&&await askConfirm('この公演を「行きたい公演」リストから外しますか？','外す',false)){
+    const removed=await commitDBChange(()=>{db.wishes=db.wishes.filter(x=>x.id!==wid)});
+    if(removed){renderWishes();renderDashboard()}
+  }
+}
+function editRecord(id){const x=db.records.find(r=>r.id===id);if(!x)return;resetForm();go('register');$('editId').value=x.id;$('topPageTitle').textContent='EDIT LOG';setRegHeading('参加記録を編集');for(const k of ['title','date','time','eventUrl','comment','privateMemo'])$(k).value=x[k==='eventUrl'?'url':k]||'';$('eventType').value=x.eventType||'';$('ticketPrice').value=x.price??'';$('hashtags').value=x.hashtags||'';const r=document.querySelector(`input[name="result"][value="${x.result}"]`);if(r)r.checked=true;rating=Number(x.rating)||0;renderStars();renderMasterSelects();setMF('organizer',x.organizer||'');setMF('venue',x.venue||'');newPhotos=x.photos||[];renderPhotoPreview();renderCompanionChecks([...(x.companions||[]),...(x.oneOffCompanions||[])]);for(const [id,v] of [['tablemates',Number(x.tablemates)||0],['participants',x.participants||'']]){const el=$(id);if(v!==''&&![...el.options].some(o=>o.value==String(v))){const o=new Option(v,v);o.dataset.extra=1;el.add(o)}el.value=v}captureRecSnap()}
 let detailRecordId='';
-function showRecordDetail(id){const x=db.records.find(r=>r.id===id);if(!x)return;detailRecordId=id;$('detailXLink').href=xPostUrl(x);$('detailTitle').innerHTML=`<span class="dt">${esc(x.title)}</span>${resBadge(x.result)}`;const item=(label,value,full=false)=>`<div class="detail-item ${full?'full':''}"><div class="detail-label">${label}</div><div class="detail-value">${value||'—'}</div></div>`;const companions=[...new Set([...(x.companions||[]),...(x.oneOffCompanions||[])])];const photos=(x.photos||[]).length?`<div class="detail-photos">${x.photos.map(src=>`<img src="${src}" alt="参加時の写真">`).join('')}</div>`:'—';$('recordDetailBody').innerHTML=`<div class="detail-grid">${item('参加日・時刻',esc(x.date||'')+(x.time?' '+esc(x.time):''))}${item('公演類型',esc(x.eventType||'未設定'))}${item('参加人数',`${Number(x.participants)>0?Number(x.participants)+'人':'未入力'}`)}${item('チケット代',x.price!==''&&x.price!==undefined?'¥'+Number(x.price).toLocaleString('ja-JP'):'')}${item('主催団体',esc(x.organizer||''),true)}${item('会場・店舗',esc(x.venue||''),true)}${item('同行者',companions.length?nameList(companions):'',true)}${item('満足度',x.rating?'★'.repeat(x.rating):'未評価')}${item('公演URL',x.url?`<a href="${esc(x.url)}" target="_blank" rel="noopener">公演ページを開く</a>`:'')}${item('感想・メモ',esc(x.comment||''),true)}${tagsOf(x.hashtags).length?item('ハッシュタグ',esc(tagsOf(x.hashtags).map(t=>'#'+t).join(' ')),true):''}<div class="detail-item full"><div class="detail-label">写真・スクリーンショット</div>${photos}</div></div>`;$('recordDetailModal').classList.add('show')}
+function showRecordDetail(id){const x=db.records.find(r=>r.id===id);if(!x)return;detailRecordId=id;$('detailXLink').href=xPostUrl(x);$('detailTitle').innerHTML=`<span class="dt">${esc(x.title)}</span>${resBadge(x.result)}`;const item=(label,value,full=false)=>`<div class="detail-item ${full?'full':''}"><div class="detail-label">${label}</div><div class="detail-value">${value||'—'}</div></div>`;const companions=[...new Set([...(x.companions||[]),...(x.oneOffCompanions||[])])];const photos=(x.photos||[]).length?`<div class="detail-photos">${x.photos.map(src=>`<img src="${src}" alt="参加時の写真">`).join('')}</div>`:'—';$('recordDetailBody').innerHTML=`<div class="detail-grid">${item('参加日・時刻',esc(x.date||'')+(x.time?' '+esc(x.time):''))}${item('公演類型',esc(x.eventType||'未設定'))}${item('参加人数',`${Number(x.participants)>0?Number(x.participants)+'人':'未入力'}`)}${item('チケット代',x.price!==''&&x.price!==undefined?'¥'+Number(x.price).toLocaleString('ja-JP'):'')}${item('主催団体',esc(x.organizer||''),true)}${item('会場・店舗',esc(x.venue||''),true)}${item('同行者',companions.length?nameList(companions):'',true)}${item('満足度',x.rating?'★'.repeat(x.rating):'未評価')}${item('公演URL',x.url?`<a href="${esc(x.url)}" target="_blank" rel="noopener">公演ページを開く</a>`:'')}${item('感想・メモ',esc(x.comment||''),true)}${tagsOf(x.hashtags).length?item('ハッシュタグ',esc(tagsOf(x.hashtags).map(t=>'#'+t).join(' ')),true):''}${x.privateMemo?`<div class="detail-item full private-memo-item"><div class="private-memo-heading"><div class="detail-label">非公開メモ</div><button type="button" class="private-memo-toggle" id="privateMemoToggle" aria-expanded="false" onclick="togglePrivateMemo()">非公開メモを表示</button></div><div class="detail-value private-memo-content" id="privateMemoContent" hidden>${esc(x.privateMemo)}</div></div>`:''}<div class="detail-item full"><div class="detail-label">写真・スクリーンショット</div>${photos}</div></div>`;$('recordDetailModal').classList.add('show')}
+function togglePrivateMemo(){const content=$('privateMemoContent'),button=$('privateMemoToggle');if(!content||!button)return;const willShow=content.hidden;content.hidden=!willShow;button.textContent=willShow?'非公開メモを非表示':'非公開メモを表示';button.setAttribute('aria-expanded',String(willShow))}
 const tagsOf=v=>String(v||'').split(/[\s,、，]+/).map(t=>t.replace(/^[#＃]+/,'')).filter(Boolean);
 const X_DEFAULT_TPL='「{title}」に参加しました！\n{date} {organizer}\n結果：{result}';
-function getXTpl(){try{return localStorage.getItem('escapeLogXTpl')||X_DEFAULT_TPL}catch(e){return X_DEFAULT_TPL}}
-function getXTags(){try{return localStorage.getItem('escapeLogXTags')||''}catch(e){return ''}}
+function getXTpl(){return safeStorageGet('escapeLogXTpl',X_DEFAULT_TPL)||X_DEFAULT_TPL}
+function getXTags(){return safeStorageGet('escapeLogXTags','')}
 function fillTpl(tpl,x){const res=x.result==='success'?'脱出成功':x.result==='fail'?'脱出失敗':x.result==='done'?'完了':'',val={title:x.title||'',date:x.date?String(x.date).replace(/-/g,'/'):'',time:x.time||'',organizer:x.organizer||'',venue:x.venue||'',type:x.eventType||'',result:res,companions:sortJa([...(x.companions||[]),...(x.oneOffCompanions||[])]).join('、'),comment:String(x.comment||'').trim()};return String(tpl).split('\n').map(l=>{let drop=false;const o=l.replace(/\{(\w+)\}/g,(m,k)=>{if(!(k in val))return m;if(!val[k])drop=true;return val[k]});return drop?null:o.trim()}).filter(l=>l!==null&&l!=='').join('\n')}
 function buildXText(tpl,x,tags){const body=fillTpl(tpl,x);if(!tags||!tags.length)return body;const tagLine=tags.map(t=>'#'+t).join(' ');return body?body+'\n'+tagLine:tagLine}
 function xPostUrl(x){const own=tagsOf(x.hashtags),tags=own.length?own:tagsOf(getXTags());return 'https://x.com/intent/post?text='+encodeURIComponent(buildXText(getXTpl(),x,tags))}
-function saveXSettings(){try{localStorage.setItem('escapeLogXTpl',$('xTemplate').value);localStorage.setItem('escapeLogXTags',$('xDefaultTags').value.trim())}catch(e){}updateXPreview()}
+function saveXSettings(){const a=safeStorageSet('escapeLogXTpl',$('xTemplate').value,true),b=safeStorageSet('escapeLogXTags',$('xDefaultTags').value.trim(),true);if(a&&b)updateXPreview()}
 function resetXTemplate(){$('xTemplate').value=X_DEFAULT_TPL;saveXSettings()}
 function updateXPreview(){const x=db.records[0]||{title:'公演タイトル',date:'2026-11-16',organizer:'主催団体',venue:'会場',eventType:'脱出ゲーム',result:'success'};const own=tagsOf(x.hashtags),tags=own.length?own:tagsOf($('xDefaultTags').value);$('xPreview').textContent=buildXText($('xTemplate').value||X_DEFAULT_TPL,x,tags)}
 function initXSettings(){$('xTemplate').value=getXTpl();$('xDefaultTags').value=getXTags();updateXPreview()}
-async function clearAllData(){const msg=`参加記録${db.records.length}件、行きたい公演${db.wishes.length}件、団体${db.organizers.length}件、会場${db.venues.length}件、同行者${db.companions.length}件の登録をすべて削除します。\nこの操作は元に戻せません。\nCSVまたはバックアップ（JSON）の保存は済んでいますか？`;if(!await askConfirm(msg,'次へ'))return;if(!await askConfirm('最終確認です。すべての登録データを削除します。よろしいですか？','すべて削除'))return;db=blankDB();saveDB();await flushDB();try{localStorage.removeItem(KEY)}catch(e){}location.reload()}
-function exportBackup(){const stamp=new Date().toLocaleDateString('sv-SE').replace(/-/g,''),blob=new Blob([JSON.stringify({app:'escape-log',version:1,exportedAt:new Date().toISOString(),data:db})],{type:'application/json'}),a=document.createElement('a'),u=URL.createObjectURL(blob);a.href=u;a.download='escape-log-backup-'+stamp+'.json';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),3000);toast('バックアップ（写真つき）を書き出しました')}
-async function importBackup(input){const f=input.files&&input.files[0];input.value='';if(!f)return;let obj;try{obj=JSON.parse(await f.text())}catch(e){toast('バックアップファイルを読み込めませんでした');return}const d=obj&&obj.data?obj.data:obj;if(!d||!Array.isArray(d.records)){toast('バックアップの形式が正しくありません');return}if(!await askConfirm(`参加記録${d.records.length}件、行きたい公演${(d.wishes||[]).length}件を、今のデータに追加します。\n同じ記録は重複しません。続けますか？`,'読み込む',false))return;const add=k=>{const ids=new Set(db[k].map(x=>x.id));let n=0;(d[k]||[]).forEach(x=>{if(x&&x.id&&!ids.has(x.id)){db[k].push(x);n++}});return n};const nr=add('records'),nw=add('wishes');['organizers','venues','companions'].forEach(k=>(d[k]||[]).forEach(v=>{if(v&&!db[k].includes(v))db[k].push(v)}));saveDB();await flushDB();renderMasterSelects();renderCompanionChecks();renderSettings();renderDashboard();renderHistory();renderWishes();toast(`参加記録${nr}件、行きたい公演${nw}件を追加しました`)}
+async function clearAllData(){
+  const msg=`参加記録${db.records.length}件、行きたい公演${db.wishes.length}件、団体${db.organizers.length}件、会場${db.venues.length}件、同行者${db.companions.length}件の登録をすべて削除します。\nこの操作は元に戻せません。\nCSVまたはバックアップ（JSON）の保存は済んでいますか？`;
+  if(!await askConfirm(msg,'次へ'))return;
+  if(!await askConfirm('最終確認です。すべての登録データを削除します。よろしいですか？','すべて削除'))return;
+  if(!await commitDBChange(()=>{db=blankDB()}))return;
+  location.reload();
+}
+async function exportBackup(){
+  if(!await persistDB())return;
+  const stamp=new Date().toLocaleDateString('sv-SE').replace(/-/g,'');
+  const blob=new Blob([JSON.stringify({app:'escape-log',version:1,exportedAt:new Date().toISOString(),data:db})],{type:'application/json'});
+  const a=document.createElement('a'),u=URL.createObjectURL(blob);
+  a.href=u;a.download='escape-log-backup-'+stamp+'.json';document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(u),3000);
+  toast('バックアップ（写真つき）を書き出しました');
+}
+function validateBackupData(d){
+  if(!d||typeof d!=='object'||Array.isArray(d))return 'バックアップの形式が正しくありません。';
+  for(const key of ['records','wishes','organizers','venues','companions']){
+    if(d[key]!==undefined&&!Array.isArray(d[key]))return `バックアップの「${key}」が配列ではありません。`;
+  }
+  if(!Array.isArray(d.records))return '参加記録の一覧がありません。';
+  for(const [key,label] of [['records','参加記録'],['wishes','行きたい公演']]){
+    for(let i=0;i<(d[key]||[]).length;i++){
+      const x=d[key][i];
+      if(!x||typeof x!=='object'||Array.isArray(x)||typeof x.id!=='string'||!x.id.trim()||typeof x.title!=='string')return `${label}の${i+1}件目のデータが不正です。`;
+      if(x.photos!==undefined&&(!Array.isArray(x.photos)||x.photos.some(p=>typeof p!=='string'||(p&&!p.startsWith('data:image/')))))return `${label}の${i+1}件目の写真データが不正です。`;
+      if(x.photo!==undefined&&typeof x.photo!=='string')return `${label}の${i+1}件目の写真データが不正です。`;
+    }
+  }
+  for(const key of ['organizers','venues','companions']){
+    if((d[key]||[]).some(v=>typeof v!=='string'))return `バックアップの「${key}」に文字列以外の値があります。`;
+  }
+  return '';
+}
+async function importBackup(input){
+  const f=input.files&&input.files[0];input.value='';if(!f)return;if(f.size>MAX_BACKUP_BYTES){toast('バックアップは150MB以下のファイルを選択してください');return}
+  let obj;
+  try{obj=JSON.parse(await f.text())}catch(e){toast('バックアップファイルを読み込めませんでした');return}
+  const d=obj&&obj.data?obj.data:obj,problem=validateBackupData(d);
+  if(problem){toast(problem);return}
+  const incomingPhotoBytes=[...(d.records||[]),...(d.wishes||[])].reduce((n,x)=>n+(x.photos||[]).reduce((a,p)=>a+dataUrlBytes(p),0)+dataUrlBytes(x.photo),0);
+  if(storedPhotoBytes()+incomingPhotoBytes>MAX_TOTAL_PHOTO_BYTES){toast('読み込み後の写真合計が100MBを超えるため、バックアップを読み込めません');return}
+  if(!await askConfirm(`参加記録${d.records.length}件、行きたい公演${(d.wishes||[]).length}件を、今のデータに追加します。\n同じ記録は重複しません。続けますか？`,'読み込む',false))return;
+  let nr=0,nw=0;
+  if(!await commitDBChange(()=>{
+    const next={...db,records:[...db.records],wishes:[...db.wishes],organizers:[...db.organizers],venues:[...db.venues],companions:[...db.companions]};
+    const add=key=>{
+      const ids=new Set(next[key].map(x=>x.id));let count=0;
+      (d[key]||[]).forEach(x=>{if(!ids.has(x.id)){next[key].push(x);ids.add(x.id);count++}});
+      return count;
+    };
+    nr=add('records');nw=add('wishes');
+    ['organizers','venues','companions'].forEach(key=>(d[key]||[]).forEach(v=>{if(!next[key].includes(v))next[key].push(v)}));
+    db=next;
+  }))return;
+  renderMasterSelects();renderCompanionChecks();renderSettings();renderDashboard();renderHistory();renderWishes();
+  toast(`参加記録${nr}件、行きたい公演${nw}件を追加しました`);
+}
 let lbList=[],lbIdx=0;
 function openLightbox(list,i){lbList=list;lbIdx=i;renderLb();$('lightbox').hidden=false}
 function renderLb(){$('lbImg').src=lbList[lbIdx];$('lbCount').textContent=lbList.length>1?`${lbIdx+1} / ${lbList.length}`:'';document.querySelectorAll('.lb-nav').forEach(b=>b.hidden=lbList.length<2)}
@@ -1770,16 +2232,23 @@ function showUndo(msg,fn){undoFn=fn;$('undoMsg').textContent=msg;$('undoBar').hi
 function hideUndo(){undoFn=null;$('undoBar').hidden=true}
 function runUndo(){const f=undoFn;hideUndo();if(f){f();toast('元に戻しました')}}
 function refreshAll(){renderDashboard();renderHistory();renderWishes();renderSettings();renderMasterSelects();renderCompanionChecks();if(currentPage==='stats')renderStats()}
-async function deleteRecord(id){const target=db.records.find(x=>x.id===id);if(!target){toast('対象の記録が見つかりません');return}if(!await askConfirm(`「${target.title}」の参加記録を削除しますか？`))return;const idx=db.records.findIndex(x=>x.id===id),before=db.records.length;db.records=db.records.filter(x=>x.id!==id);if(db.records.length===before){toast('削除できませんでした');return}if(!saveDB()){db.records.push(target);return}closeRecordDetail();renderHistory();renderDashboard();showUndo('参加記録を削除しました',()=>{db.records.splice(Math.min(idx,db.records.length),0,target);saveDB();refreshAll()})}
+async function deleteRecord(id){
+  const target=db.records.find(x=>x.id===id);if(!target){toast('対象の記録が見つかりません');return}
+  if(!await askConfirm(`「${target.title}」の参加記録を削除しますか？`))return;
+  const idx=db.records.findIndex(x=>x.id===id);
+  if(!await commitDBChange(()=>{db.records=db.records.filter(x=>x.id!==id)}))return;
+  closeRecordDetail();renderHistory();renderDashboard();
+  showUndo('参加記録を削除しました',async()=>{if(await commitDBChange(()=>{db.records.splice(Math.min(idx,db.records.length),0,target)}))refreshAll()});
+}
 
-function addMaster(key,inputId){const v=$(inputId).value.trim();if(!v)return;if(db[key].includes(v)){toast('すでに登録されています');return}db[key].push(v);$(inputId).value='';saveDB();renderSettings();renderMasterSelects();toast('登録しました')}
+async function addMaster(key,inputId){const v=$(inputId).value.trim();if(!v)return;if(db[key].includes(v)){toast('すでに登録されています');return}if(!await commitDBChange(()=>{db[key].push(v)}))return;$(inputId).value='';renderSettings();renderMasterSelects();toast('登録しました')}
 function renderSettings(){for(const [key,id] of [['organizers','organizerList'],['venues','venueList']])$(id).innerHTML=db[key].length?sortJa(db[key]).map(v=>`<div class="master-item"><span>${esc(v)}</span><button class="iconbtn" aria-label="削除" title="削除" onclick="removeMasterEncoded('${key}','${encodeURIComponent(v)}')">×</button></div>`).join(''):'<span class="hint">まだ登録されていません</span>';renderSettingsCompanions()}
 function removeMasterEncoded(key,v){removeMaster(key,decodeURIComponent(v))}
-async function removeMaster(key,v){if(!await askConfirm(`「${v}」を選択肢から削除しますか？過去の記録には残ります。`))return;const idx=db[key].indexOf(v);db[key]=db[key].filter(x=>x!==v);saveDB();renderSettings();renderMasterSelects();showUndo(`「${v}」を削除しました`,()=>{if(!db[key].includes(v))db[key].splice(Math.min(idx,db[key].length),0,v);saveDB();refreshAll()})}
-function addCompanionFromSettings(){const v=$('settingsCompanion').value.trim();if(!v)return;if(db.companions.includes(v)){toast('登録済みです');return}db.companions.push(v);$('settingsCompanion').value='';saveDB();renderSettings();renderCompanionChecks()}
+async function removeMaster(key,v){if(!await askConfirm(`「${v}」を選択肢から削除しますか？過去の記録には残ります。`))return;const idx=db[key].indexOf(v);if(!await commitDBChange(()=>{db[key]=db[key].filter(x=>x!==v)}))return;renderSettings();renderMasterSelects();showUndo(`「${v}」を削除しました`,async()=>{if(!db[key].includes(v)&&await commitDBChange(()=>{db[key].splice(Math.min(idx,db[key].length),0,v)}))refreshAll()})}
+async function addCompanionFromSettings(){const v=$('settingsCompanion').value.trim();if(!v)return;if(db.companions.includes(v)){toast('登録済みです');return}if(!await commitDBChange(()=>{db.companions.push(v)}))return;$('settingsCompanion').value='';renderSettings();renderCompanionChecks()}
 function renderSettingsCompanions(){$('settingsCompanionList').innerHTML=db.companions.length?sortJa(db.companions).map(c=>`<div class="master-item"><span>${esc(c)}</span><button class="iconbtn" aria-label="削除" title="削除" onclick="removeCompanionEncoded('${encodeURIComponent(c)}')">×</button></div>`).join(''):'<span class="hint">未登録</span>'}
 function removeCompanionEncoded(v){removeCompanion(decodeURIComponent(v))}
-async function removeCompanion(c){if(!await askConfirm(`${c} を同行者リストから削除しますか？過去の記録には残ります。`))return;const idx=db.companions.indexOf(c);db.companions=db.companions.filter(x=>x!==c);saveDB();renderSettings();renderCompanionChecks();showUndo(`${c} を削除しました`,()=>{if(!db.companions.includes(c))db.companions.splice(Math.min(idx,db.companions.length),0,c);saveDB();refreshAll()})}
+async function removeCompanion(c){if(!await askConfirm(`${c} を同行者リストから削除しますか？過去の記録には残ります。`))return;const idx=db.companions.indexOf(c);if(!await commitDBChange(()=>{db.companions=db.companions.filter(x=>x!==c)}))return;renderSettings();renderCompanionChecks();showUndo(`${c} を削除しました`,async()=>{if(!db.companions.includes(c)&&await commitDBChange(()=>{db.companions.splice(Math.min(idx,db.companions.length),0,c)}))refreshAll()})}
 
 function openWishModal(id=''){
   const w=db.wishes.find(x=>x.id===id);
@@ -1853,34 +2322,66 @@ function getWishSnap(){return JSON.stringify({t:$('wishTitle').value,s:$('wishRe
 function captureWishSnap(){_wishSnap=getWishSnap()}
 async function closeWishModal(force=false){if(!force&&_wishSnap&&getWishSnap()!==_wishSnap&&!await askConfirm('入力中の内容は保存されていません。閉じてもよろしいですか？','閉じる',true))return;_wishSnap='';$('wishModal').classList.remove('show')}
 const IMGQ={std:[1280,.8],small:[800,.6]};
-function getImgQ(){try{return localStorage.getItem('escapeLogImgQ')||'std'}catch(e){return 'std'}}
+const MAX_PHOTO_BYTES=2*1024*1024,MAX_TOTAL_PHOTO_BYTES=100*1024*1024,MAX_RAW_PHOTO_BYTES=20*1024*1024,MAX_BACKUP_BYTES=150*1024*1024;
+function dataUrlBytes(v){if(typeof v!=='string'||!v.startsWith('data:'))return 0;const i=v.indexOf(',');if(i<0)return 0;const b=v.slice(i+1);return Math.floor(b.length*3/4)-(b.endsWith('==')?2:b.endsWith('=')?1:0)}
+function storedPhotoBytes(excludeRecordId='',excludeWishId=''){
+  let n=0;for(const x of db.records||[])if(x.id!==excludeRecordId){for(const p of x.photos||[])n+=dataUrlBytes(p);n+=dataUrlBytes(x.photo)}
+  for(const x of db.wishes||[])if(x.id!==excludeWishId){for(const p of x.photos||[])n+=dataUrlBytes(p);n+=dataUrlBytes(x.photo)}return n;
+}
+function photoCapacityFor(list,kind){const rid=kind==='record'?$('editId').value:'',wid=kind==='wish'?$('wishEditId').value:'';return storedPhotoBytes(rid,wid)+(list||[]).reduce((n,p)=>n+dataUrlBytes(p),0)}
+async function updateStorageUsage(){const el=$('storageUsage');if(!el)return;if(!navigator.storage||!navigator.storage.estimate){el.textContent='このブラウザでは保存容量の確認に対応していません。';return}try{const x=await navigator.storage.estimate(),used=Number(x.usage)||0,quota=Number(x.quota)||0,fmt=n=>n>=1024*1024?(n/1024/1024).toFixed(1)+'MB':Math.round(n/1024)+'KB';el.textContent=quota?`ブラウザの保存領域：約${fmt(used)}使用中／約${fmt(quota)}（目安）。写真の登録上限は合計100MBです。`:`保存領域の使用量：約${fmt(used)}。写真の登録上限は合計100MBです。`}catch(e){el.textContent='保存容量を取得できませんでした。'}}
+function getImgQ(){return safeStorageGet('escapeLogImgQ','std')||'std'}
 const IMGL={std:'標準（長辺1280px）',small:'強く圧縮（長辺800px）',none:'圧縮しない（元のまま）'};
-function setImgQ(v){if(!IMGL[v])v='std';try{localStorage.setItem('escapeLogImgQ',v)}catch(e){}document.querySelectorAll('#imgQSeg button').forEach(b=>{const on=b.dataset.v===v;b.classList.toggle('on',on);b.setAttribute('aria-pressed',on)});document.querySelectorAll('.imgq-note').forEach(n=>n.textContent='画像の圧縮：'+IMGL[v]+'（設定タブで変更できます）')}
+function setImgQ(v,persist=true){if(!IMGL[v])v='std';if(persist)safeStorageSet('escapeLogImgQ',v,true);document.querySelectorAll('#imgQSeg button').forEach(b=>{const on=b.dataset.v===v;b.classList.toggle('on',on);b.setAttribute('aria-pressed',on)});document.querySelectorAll('.imgq-note').forEach(n=>n.textContent='画像の圧縮：'+IMGL[v]+'（設定タブで変更できます）')}
 function readDataURL(f){return new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result);r.onerror=rej;r.readAsDataURL(f)})}
-async function prepareImage(f){const q=getImgQ(),raw=await readDataURL(f);if(q==='none'){if(f.size>20*1024*1024){toast('1枚20MB以下の画像を選んでください');return null}return raw}const [max,quality]=IMGQ[q]||IMGQ.std;try{const img=await new Promise((res,rej)=>{const i=new Image();i.onload=()=>res(i);i.onerror=rej;i.src=raw}),k=Math.min(1,max/Math.max(img.naturalWidth,img.naturalHeight)),w=Math.max(1,Math.round(img.naturalWidth*k)),h=Math.max(1,Math.round(img.naturalHeight*k)),c=document.createElement('canvas');c.width=w;c.height=h;const g=c.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,w,h);g.drawImage(img,0,0,w,h);const out=c.toDataURL('image/jpeg',quality);return out.length<raw.length?out:raw}catch(e){return raw}}
-const kb=d=>Math.max(1,Math.round(d.length*.75/1024))+'KB';
-$('photos').addEventListener('change',async e=>{let last='';for(const f of e.target.files){const d=await prepareImage(f);if(d){newPhotos.push(d);last=kb(d)}}renderPhotoPreview();e.target.value='';if(last)toast('写真を追加しました（最後の1枚 約'+last+'）')});
-$('wishPhoto').addEventListener('change',async e=>{let last='';for(const f of e.target.files){const d=await prepareImage(f);if(d){wishPhotos.push(d);last=kb(d)}}renderWishPhotoPreview();e.target.value='';if(last)toast('写真を追加しました（最後の1枚 約'+last+'）')});
-setImgQ(getImgQ());initXSettings();
+async function prepareImage(f){
+  if(!f||!/^image\//i.test(f.type)){toast('画像ファイルを選択してください');return null}
+  if(f.size>MAX_RAW_PHOTO_BYTES){toast('元画像は1枚20MB以下にしてください');return null}
+  try{
+    const raw=await readDataURL(f),q=getImgQ();
+    if(q==='none')return raw;
+    const img=await new Promise((res,rej)=>{const i=new Image();i.onload=()=>res(i);i.onerror=rej;i.src=raw});
+    const [max,baseQ]=IMGQ[q]||IMGQ.std;let scale=Math.min(1,max/Math.max(img.naturalWidth,img.naturalHeight));
+    for(let attempt=0;attempt<8;attempt++){
+      const w=Math.max(1,Math.round(img.naturalWidth*scale)),h=Math.max(1,Math.round(img.naturalHeight*scale)),c=document.createElement('canvas');c.width=w;c.height=h;
+      const g=c.getContext('2d');if(!g)throw new Error('canvas unavailable');g.fillStyle='#fff';g.fillRect(0,0,w,h);g.drawImage(img,0,0,w,h);
+      for(const quality of [baseQ,Math.max(.5,baseQ-.15),.5]){const out=c.toDataURL('image/jpeg',quality);if(dataUrlBytes(out)<=MAX_PHOTO_BYTES)return out}
+      if(w<=480&&h<=480)break;scale*=.78;
+    }
+    toast('圧縮後も1枚2MBを超えるため、この写真は追加できませんでした');return null;
+  }catch(err){reportAppError(err,'画像を読み込めませんでした。別の画像を選んでください。');return null}
+}
+async function addSelectedPhotos(files,target,kind){let added=0;for(const f of files){const d=await prepareImage(f);if(!d)continue;const next=[...target,d],total=photoCapacityFor(next,kind);if(total>MAX_TOTAL_PHOTO_BYTES){toast('写真の合計容量が100MBを超えるため、これ以上追加できません');break}target.push(d);added++}return added}
+$('photos').addEventListener('change',async e=>{const n=await addSelectedPhotos(e.target.files,newPhotos,'record');renderPhotoPreview();e.target.value='';if(n)toast(`${n}枚の写真を追加しました`)});
+$('wishPhoto').addEventListener('change',async e=>{const n=await addSelectedPhotos(e.target.files,wishPhotos,'wish');renderWishPhotoPreview();e.target.value='';if(n)toast(`${n}枚の写真を追加しました`)});
+setImgQ(getImgQ(),false);updateStorageUsage();initXSettings();
 document.querySelectorAll('input[name="result"]').forEach(inp=>{const lb=inp.closest('label');lb.addEventListener('pointerdown',()=>{inp.dataset.was=inp.checked?'1':''});inp.addEventListener('click',()=>{if(inp.dataset.was==='1'){inp.checked=false;inp.dataset.was=''}})});
 
-function saveWish(){const title=$('wishTitle').value.trim();if(!title){toast('公演タイトルを入力してください');return}const id=$('wishEditId').value,w={id:id||uid(),title,status:$('wishReserved').checked?'reserved':'wanted',date:$('wishDate').value,time:$('wishTime').value,eventType:$('wishType').value,organizer:getMF('wishOrganizer'),venue:getMF('wishVenue'),companions:[...wishSelectedComp],oneOffCompanions:parseNames($('wishOtherCompanions').value),participants:Number($('wishParticipants').value)||0,tablemates:Number($('wishTablemates').value)||0,url:$('wishUrl').value.trim(),price:$('wishPrice').value===''?'':Number($('wishPrice').value),advance:$('wishAdvance').checked,advanceTo:$('wishAdvance').checked?$('wishAdvanceTo').value.trim():'',saleAt:$('wishSaleAt').value,alarmAt:$('wishAlarmAt').value,saleUrl:$('wishSaleUrl').value.trim(),memo:$('wishMemo').value,photos:[...wishPhotos]};if(id)db.wishes=db.wishes.map(x=>x.id===id?w:x);else db.wishes.push(w);if(saveDB()){closeWishModal(true);renderWishes();renderDashboard();toast(id?'内容を更新しました':'公演を追加しました')}}
+async function saveWish(){
+  const title=$('wishTitle').value.trim();
+  if(!title){toast('公演タイトルを入力してください');return}
+  const id=$('wishEditId').value,w={id:id||uid(),title,status:$('wishReserved').checked?'reserved':'wanted',date:$('wishDate').value,time:$('wishTime').value,eventType:$('wishType').value,organizer:getMF('wishOrganizer'),venue:getMF('wishVenue'),companions:[...wishSelectedComp],oneOffCompanions:parseNames($('wishOtherCompanions').value),participants:Number($('wishParticipants').value)||0,tablemates:Number($('wishTablemates').value)||0,url:$('wishUrl').value.trim(),price:$('wishPrice').value===''?'':Number($('wishPrice').value),advance:$('wishAdvance').checked,advanceTo:$('wishAdvance').checked?$('wishAdvanceTo').value.trim():'',saleAt:$('wishSaleAt').value,alarmAt:$('wishAlarmAt').value,saleUrl:$('wishSaleUrl').value.trim(),memo:$('wishMemo').value,photos:[...wishPhotos]};
+  const saved=await commitDBChange(()=>{db.wishes=id?db.wishes.map(x=>x.id===id?w:x):[...db.wishes,w]});
+  if(!saved)return;
+  closeWishModal(true);renderWishes();renderDashboard();toast(id?'内容を更新しました':'公演を追加しました');
+}
 function setWishView(v,btn){wishView=v;document.querySelectorAll('[data-wish-view]').forEach(b=>b.classList.toggle('active',b===btn));renderWishes()}
 function renderWishes(){document.querySelectorAll('[data-wish-view]').forEach(b=>b.classList.toggle('active',b.dataset.wishView===wishView));const all=db.wishes||[],wsort=($('wishSort')&&$('wishSort').value)||'added',today=new Date().toLocaleDateString('sv-SE');let shown=[...all];if(wsort==='date')shown.sort((a,b)=>(a.date||'9999-99-99').localeCompare(b.date||'9999-99-99')||(a.time||'99:99').localeCompare(b.time||'99:99'));else if(wsort==='sale')shown.sort((a,b)=>(a.saleAt||'9999-99-99').localeCompare(b.saleAt||'9999-99-99'));else if(wsort==='price')shown.sort((a,b)=>(Number(b.price)||-1)-(Number(a.price)||-1));const target=$('wishAll');if(!shown.length){target.innerHTML='<div class="empty">登録はありません</div>';return}
 const isPast=w=>!!(w.date&&w.date<today),badges=w=>[w.status==='reserved'?'<span class="pill reserved">購入済み</span>':'',isPast(w)?'<span class="pill past">開催済み</span>':''].filter(Boolean).join(' '),cardBadge=w=>isPast(w)?'<span class="pill past fc-badge">開催済み</span>':(w.status==='reserved'?'<span class="pill reserved fc-badge">購入済み</span>':''),comps=w=>[...new Set([...(w.companions||[]),...(w.oneOffCompanions||[])])],adv=w=>`立替${w.advanceTo?'：<span class="red">'+esc(w.advanceTo)+'</span>':''}`,when=w=>`${esc(w.date||'日程未定')}${w.time?' '+esc(w.time):''}`,
 rowMeta=w=>`<div class="meta">${when(w)}</div>${w.organizer?`<div class="meta">${esc(w.organizer)}</div>`:''}${comps(w).length?`<div class="meta">${nameList(comps(w))}</div>`:''}${w.saleAt?`<div class="meta red">チケット販売 ${esc(fmtDT(w.saleAt))}</div>`:''}${w.advance?`<div class="meta">${adv(w)}</div>`:''}`,
 cardMeta=w=>`<div>${when(w)}</div>${w.organizer?`<div>${esc(w.organizer)}</div>`:''}${w.saleAt?`<div class="red">チケット販売 ${esc(fmtDT(w.saleAt))}</div>`:''}${w.advance?`<div>${adv(w)}</div>`:''}`;
 target.innerHTML=wishView==='list'?`<div class="record-list">${shown.map(w=>{const b=badges(w);return `<article class="record-row"><div class="thumb">${wishThumb(w)?`<img src="${wishThumb(w)}" alt="" loading="lazy" decoding="async">`:resIcon('')}</div><div class="record-main"><div class="record-title title-tap" role="button" tabindex="0" onclick="showWishDetail('${w.id}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();showWishDetail('${w.id}')}">${esc(w.title)}</div>${rowMeta(w)}${b?`<div>${b}</div>`:''}</div></article>`}).join('')}</div>`:`<div class="feature-list">${shown.map(w=>`<article class="feature-card wish"><div class="photo" ${wishThumb(w)?`style="background-image:url('${wishThumb(w)}')"`:''}></div>${cardBadge(w)}<div class="feature-info"><div class="feature-title title-tap" role="button" tabindex="0" onclick="showWishDetail('${w.id}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();showWishDetail('${w.id}')}">${esc(w.title)}</div><div class="feature-meta">${cardMeta(w)}</div></div></article>`).join('')}</div>`}
-async function deleteWish(id){const w=db.wishes.find(x=>x.id===id);if(!w||!await askConfirm(`「${w.title}」を行きたいリストから削除しますか？`))return;const idx=db.wishes.findIndex(x=>x.id===id);db.wishes=db.wishes.filter(x=>x.id!==id);selectedWishes.delete(id);saveDB();closeWishModal(true);renderWishes();renderDashboard();showUndo('行きたい公演を削除しました',()=>{db.wishes.splice(Math.min(idx,db.wishes.length),0,w);saveDB();refreshAll()})}
+async function deleteWish(id){const w=db.wishes.find(x=>x.id===id);if(!w||!await askConfirm(`「${w.title}」を行きたいリストから削除しますか？`))return;const idx=db.wishes.findIndex(x=>x.id===id);if(!await commitDBChange(()=>{db.wishes=db.wishes.filter(x=>x.id!==id)}))return;selectedWishes.delete(id);closeWishModal(true);renderWishes();renderDashboard();showUndo('行きたい公演を削除しました',async()=>{if(await commitDBChange(()=>{db.wishes.splice(Math.min(idx,db.wishes.length),0,w)}))refreshAll()})}
 function deleteWishFromModal(){const id=$('wishEditId').value;if(id)deleteWish(id)}
 
-function csvCell(v){return '"'+String(v??'').replace(/"/g,'""')+'"'}function exportCSV(){const rows=[['type','title','date','time','result','eventType','venue','organizer','companions','oneOffCompanions','tablemates','participants','rating','comment','url','status','memo','price','saleAt','alarmAt','saleUrl','advance','advanceTo','hashtags'],...db.records.map(x=>['record',x.title,x.date,x.time||'',x.result,x.eventType||'',x.venue,x.organizer,(x.companions||[]).join('|'),(x.oneOffCompanions||[]).join('|'),x.tablemates||0,x.participants||1,x.rating,x.comment,x.url,'','',x.price??'','','','','','',x.hashtags||'']),...db.wishes.map(x=>['wish',x.title,x.date,x.time||'','',x.eventType||'',x.venue||'',x.organizer||'',(x.companions||[]).join('|'),(x.oneOffCompanions||[]).join('|'),x.tablemates||0,x.participants||0,'','',x.url||'',x.status,x.memo,x.price??'',x.saleAt||'',x.alarmAt||'',x.saleUrl||'',x.advance?1:'',x.advanceTo||'','']),...db.organizers.map(n=>['organizer',n]),...db.venues.map(n=>['venue',n]),...sortJa(db.companions).map(n=>['companion',n])];const csv='\ufeff'+rows.map(r=>r.map(csvCell).join(',')).join('\r\n'),a=document.createElement('a'),url=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));a.href=url;a.download='escape-log-backup.csv';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);toast('CSVを書き出しました')}
+function csvCell(v){return '"'+String(v??'').replace(/"/g,'""')+'"'}function exportCSV(){const rows=[['type','title','date','time','result','eventType','venue','organizer','companions','oneOffCompanions','tablemates','participants','rating','comment','privateMemo','url','status','memo','price','saleAt','alarmAt','saleUrl','advance','advanceTo','hashtags'],...db.records.map(x=>['record',x.title,x.date,x.time||'',x.result,x.eventType||'',x.venue,x.organizer,(x.companions||[]).join('|'),(x.oneOffCompanions||[]).join('|'),x.tablemates||0,x.participants||1,x.rating,x.comment,x.privateMemo||'',x.url,'','',x.price??'','','','','','',x.hashtags||'']),...db.wishes.map(x=>['wish',x.title,x.date,x.time||'','',x.eventType||'',x.venue||'',x.organizer||'',(x.companions||[]).join('|'),(x.oneOffCompanions||[]).join('|'),x.tablemates||0,x.participants||0,'','','',x.url||'',x.status,x.memo,x.price??'',x.saleAt||'',x.alarmAt||'',x.saleUrl||'',x.advance?1:'',x.advanceTo||'','']),...db.organizers.map(n=>['organizer',n]),...db.venues.map(n=>['venue',n]),...sortJa(db.companions).map(n=>['companion',n])];const csv='\ufeff'+rows.map(r=>r.map(csvCell).join(',')).join('\r\n'),a=document.createElement('a'),url=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));a.href=url;a.download='escape-log-backup.csv';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);toast('CSVを書き出しました')}
 function parseCSV(text){const rows=[];let row=[],v='',q=false;for(let i=0;i<text.length;i++){const c=text[i];if(q){if(c==='"'&&text[i+1]==='"'){v+='"';i++}else if(c==='"')q=false;else v+=c}else if(c==='"')q=true;else if(c===','){row.push(v);v=''}else if(c==='\n'){row.push(v.replace(/\r$/,''));rows.push(row);row=[];v=''}else v+=c}if(v||row.length){row.push(v);rows.push(row)}return rows}
-async function importCSV(){const f=$('csvFile').files[0];if(!f)return;const rows=parseCSV((await f.text()).replace(/^\ufeff/,''));if(rows.length<2){toast('CSVデータがありません');return}const h=rows[0],ix=k=>h.indexOf(k),records=[],wishes=[],masters=[];for(const a of rows.slice(1)){if(a[ix('type')]==='record')records.push({id:uid(),title:a[ix('title')]||'',date:a[ix('date')]||'',time:a[ix('time')]||'',result:a[ix('result')]==='success'?'success':a[ix('result')]==='fail'?'fail':a[ix('result')]==='done'?'done':'',eventType:ix('eventType')>=0?(a[ix('eventType')]||''):'',venue:a[ix('venue')]||'',organizer:a[ix('organizer')]||'',companions:(a[ix('companions')]||'').split('|').filter(Boolean),oneOffCompanions:(a[ix('oneOffCompanions')]||'').split('|').filter(Boolean),tablemates:Number(a[ix('tablemates')])||0,participants:Number(a[ix('participants')])||0,rating:Number(a[ix('rating')])||0,comment:a[ix('comment')]||'',url:a[ix('url')]||'',price:ix('price')>=0&&a[ix('price')]!==''&&a[ix('price')]!==undefined?Number(a[ix('price')]):'',hashtags:ix('hashtags')>=0?(a[ix('hashtags')]||''):'',photos:[]});else if(a[ix('type')]==='wish')wishes.push({id:uid(),title:a[ix('title')]||'',date:a[ix('date')]||'',status:a[ix('status')]==='reserved'?'reserved':'wanted',memo:a[ix('memo')]||'',price:a[ix('price')]||'',saleAt:a[ix('saleAt')]||'',alarmAt:a[ix('alarmAt')]||'',saleUrl:a[ix('saleUrl')]||'',advance:a[ix('advance')]==='1',advanceTo:a[ix('advanceTo')]||'',time:a[ix('time')]||'',eventType:ix('eventType')>=0?(a[ix('eventType')]||''):'',venue:a[ix('venue')]||'',organizer:a[ix('organizer')]||'',companions:(a[ix('companions')]||'').split('|').filter(Boolean),oneOffCompanions:(a[ix('oneOffCompanions')]||'').split('|').filter(Boolean),tablemates:Number(a[ix('tablemates')])||0,participants:Number(a[ix('participants')])||0,url:a[ix('url')]||'',photos:[]});else if(['organizer','venue','companion'].includes(a[ix('type')])&&a[ix('title')])masters.push([a[ix('type')],a[ix('title')]])}if(await askConfirm(`参加記録${records.length}件、行きたい公演${wishes.length}件を追加しますか？既存データは残ります。`,'追加する',false)){db.records.push(...records);db.wishes.push(...wishes);const addTo=(k,v)=>{v=String(v||'').trim();if(v&&!db[k].includes(v))db[k].push(v)};masters.forEach(([t,v])=>addTo(t==='organizer'?'organizers':t==='venue'?'venues':'companions',v));[...records,...wishes].forEach(r=>{(r.companions||[]).forEach(c=>addTo('companions',c))});saveDB();renderMasterSelects();renderCompanionChecks();renderSettings();renderDashboard();renderHistory();renderWishes();toast('CSVを取り込みました')}$('csvFile').value=''}
+async function importCSV(){const f=$('csvFile').files[0];if(!f)return;let rows;try{rows=parseCSV((await f.text()).replace(/^\ufeff/,''))}catch(err){reportAppError(err,'CSVファイルを読み込めませんでした。');$('csvFile').value='';return}if(rows.length<2){toast('CSVデータがありません');$('csvFile').value='';return}const h=rows[0],ix=k=>h.indexOf(k),records=[],wishes=[],masters=[];for(const a of rows.slice(1)){if(a[ix('type')]==='record')records.push({id:uid(),title:a[ix('title')]||'',date:a[ix('date')]||'',time:a[ix('time')]||'',result:a[ix('result')]==='success'?'success':a[ix('result')]==='fail'?'fail':a[ix('result')]==='done'?'done':'',eventType:ix('eventType')>=0?(a[ix('eventType')]||''):'',venue:a[ix('venue')]||'',organizer:a[ix('organizer')]||'',companions:(a[ix('companions')]||'').split('|').filter(Boolean),oneOffCompanions:(a[ix('oneOffCompanions')]||'').split('|').filter(Boolean),tablemates:Number(a[ix('tablemates')])||0,participants:Number(a[ix('participants')])||0,rating:Number(a[ix('rating')])||0,comment:a[ix('comment')]||'',privateMemo:ix('privateMemo')>=0?(a[ix('privateMemo')]||''):'',url:a[ix('url')]||'',price:ix('price')>=0&&a[ix('price')]!==''&&a[ix('price')]!==undefined?Number(a[ix('price')]):'',hashtags:ix('hashtags')>=0?(a[ix('hashtags')]||''):'',photos:[]});else if(a[ix('type')]==='wish')wishes.push({id:uid(),title:a[ix('title')]||'',date:a[ix('date')]||'',status:a[ix('status')]==='reserved'?'reserved':'wanted',memo:a[ix('memo')]||'',price:a[ix('price')]||'',saleAt:a[ix('saleAt')]||'',alarmAt:a[ix('alarmAt')]||'',saleUrl:a[ix('saleUrl')]||'',advance:a[ix('advance')]==='1',advanceTo:a[ix('advanceTo')]||'',time:a[ix('time')]||'',eventType:ix('eventType')>=0?(a[ix('eventType')]||''):'',venue:a[ix('venue')]||'',organizer:a[ix('organizer')]||'',companions:(a[ix('companions')]||'').split('|').filter(Boolean),oneOffCompanions:(a[ix('oneOffCompanions')]||'').split('|').filter(Boolean),tablemates:Number(a[ix('tablemates')])||0,participants:Number(a[ix('participants')])||0,url:a[ix('url')]||'',photos:[]});else if(['organizer','venue','companion'].includes(a[ix('type')])&&a[ix('title')])masters.push([a[ix('type')],a[ix('title')]])}if(await askConfirm(`参加記録${records.length}件、行きたい公演${wishes.length}件を追加しますか？既存データは残ります。`,'追加する',false)){const saved=await commitDBChange(()=>{db.records.push(...records);db.wishes.push(...wishes);const addTo=(k,v)=>{v=String(v||'').trim();if(v&&!db[k].includes(v))db[k].push(v)};masters.forEach(([t,v])=>addTo(t==='organizer'?'organizers':t==='venue'?'venues':'companions',v));[...records,...wishes].forEach(r=>{(r.companions||[]).forEach(c=>addTo('companions',c))})});if(saved){renderMasterSelects();renderCompanionChecks();renderSettings();renderDashboard();renderHistory();renderWishes();toast('CSVを取り込みました')}}$('csvFile').value=''}
 
 function fillNums(id,from,blank){let h=blank?'<option value="">選択</option>':'';for(let i=from;i<=20;i++)h+=`<option value="${i}"${i===0?' selected':''}>${i}</option>`;$(id).innerHTML=h}
 fillNums('participants',1,true);fillNums('tablemates',0,false);wheelInit('time');wheelInit('wishTime');fillNums('wishParticipants',1,true);fillNums('wishTablemates',0,false);$('wishType').innerHTML=$('eventType').innerHTML;
 $('date').value=new Date().toLocaleDateString('sv-SE');document.body.classList.add('home-active');renderDashboard();renderHistory();renderWishes();renderSettings();renderMasterSelects();renderCompanionChecks();renderStars();
+if(window.__BOOT_ERROR){const notice=document.createElement('div');notice.setAttribute('role','alert');notice.style.cssText='position:fixed;z-index:99999;top:0;left:0;right:0;padding:14px 16px;background:#7f1d1d;color:#fff;font-size:13px;font-weight:700;line-height:1.55;box-shadow:0 3px 14px rgba(0,0,0,.25)';notice.textContent=window.__BOOT_ERROR+' データの上書きを防ぐため、保存・編集を停止しています。ブラウザの保存領域を消去せず、元データの確認を行ってください。';document.body.appendChild(notice)}else if(window.__BOOT_WARNING){toast(window.__BOOT_WARNING)}
 
 hFilter={ym:'',res:'',type:'',comp:''};
 function histFiltered(arr){return arr.filter(x=>(!hFilter.ym||(hFilter.ym.endsWith('-00')?String(x.date||'').startsWith(hFilter.ym.slice(0,4)):String(x.date||'').slice(0,7)===hFilter.ym))&&(!hFilter.res||(hFilter.res==='none'?!x.result:x.result===hFilter.res))&&(!hFilter.type||x.eventType===hFilter.type)&&(!hFilter.org||x.organizer===hFilter.org)&&(!hFilter.comp||recNames(x).includes(hFilter.comp)))}
@@ -1944,7 +2445,38 @@ const THUMB_PX=360;
 function thumbKey(p){return p.length+':'+p.slice(-24)}
 function makeThumb(src){return new Promise(res=>{const i=new Image();i.onload=()=>{try{const k=Math.min(1,THUMB_PX/Math.max(i.naturalWidth,i.naturalHeight)),w=Math.max(1,Math.round(i.naturalWidth*k)),h=Math.max(1,Math.round(i.naturalHeight*k)),c=document.createElement('canvas');c.width=w;c.height=h;const g=c.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,w,h);g.drawImage(i,0,0,w,h);res(c.toDataURL('image/jpeg',.72))}catch(e){res('')}};i.onerror=()=>res('');i.src=src})}
 let thumbBusy=false;
-async function ensureThumbs(){if(thumbBusy)return;thumbBusy=true;let changed=false;try{for(const x of [...db.records,...db.wishes]){const p=(x.photos&&x.photos[0])||x.photo||'';if(!p){if(x.thumb||x.thumbKey){delete x.thumb;delete x.thumbKey;changed=true}continue}const key=thumbKey(p);if(x.thumbKey===key)continue;if(p.length<60000){x.thumb='';x.thumbKey=key;continue}x.thumb=await makeThumb(p);x.thumbKey=key;changed=true}}catch(e){}thumbBusy=false;if(changed){saveDB();renderDashboard();renderHistory();renderWishes()}}
+async function ensureThumbs(){
+  if(thumbBusy||storageBlocked)return;
+  thumbBusy=true;
+  const updates=[];
+  try{
+    for(const [kind,list] of [['record',db.records],['wish',db.wishes]]){
+      for(const x of list){
+        const p=(x.photos&&x.photos[0])||x.photo||'';
+        if(!p){if(x.thumb||x.thumbKey)updates.push({kind,id:x.id,remove:true});continue}
+        const key=thumbKey(p);
+        if(x.thumbKey===key)continue;
+        const thumb=p.length<60000?'':await makeThumb(p);
+        updates.push({kind,id:x.id,key,photoKey:key,thumb});
+      }
+    }
+    if(updates.length){
+      const saved=await commitDBChange(()=>{
+        for(const u of updates){
+          const list=u.kind==='record'?db.records:db.wishes;
+          const item=list.find(x=>x.id===u.id);
+          if(!item)continue;
+          const current=(item.photos&&item.photos[0])||item.photo||'';
+          if(u.remove){if(!current){delete item.thumb;delete item.thumbKey}continue}
+          if(thumbKey(current)!==u.photoKey)continue;
+          item.thumb=u.thumb;item.thumbKey=u.key;
+        }
+      });
+      if(saved){renderDashboard();renderHistory();renderWishes()}
+    }
+  }catch(err){reportAppError(err,'写真のサムネイルを作成できませんでした。元の写真データは保持されています。')}
+  finally{thumbBusy=false}
+}
 let _hdb;function debouncedHistory(){clearTimeout(_hdb);_hdb=setTimeout(renderHistory,150)}
 setTimeout(ensureThumbs,800);
 </script>
@@ -1965,14 +2497,11 @@ const DEFAULT_CUSTOM_THEMES={
 const CUSTOM_LABELS={custom1:'カスタム1',custom2:'カスタム2',custom3:'カスタム3'};
 
 function getCustomThemes(){
-  try{
-    const raw=localStorage.getItem('escapeLogCustomThemes');
-    return raw?{...DEFAULT_CUSTOM_THEMES,...JSON.parse(raw)}:{...DEFAULT_CUSTOM_THEMES};
-  }catch(e){return {...DEFAULT_CUSTOM_THEMES}}
+  try{const raw=safeStorageGet('escapeLogCustomThemes','');return raw?{...DEFAULT_CUSTOM_THEMES,...JSON.parse(raw)}:{...DEFAULT_CUSTOM_THEMES}}
+  catch(err){return {...DEFAULT_CUSTOM_THEMES}}
 }
-function saveCustomThemes(map){
-  try{localStorage.setItem('escapeLogCustomThemes',JSON.stringify(map))}catch(e){}
-}
+function saveCustomThemes(map){return safeStorageSet('escapeLogCustomThemes',JSON.stringify(map),true)}
+
 function hexToRgb(h){
   h=String(h||'#ffffff').replace('#','');
   if(h.length===3)h=h[0]+h[0]+h[1]+h[1]+h[2]+h[2];
@@ -2045,12 +2574,12 @@ function renderThemeSwatches(){
     </button>`
   ).join('');
 }
-function setTheme(k){
+function setTheme(k,persist=true){
   const ct=getCustomThemes();
   const isCustom=k in CUSTOM_LABELS;
   if(!BASE_THEMES[k]&&!isCustom)k='paper';
   document.documentElement.dataset.theme=k;
-  try{localStorage.setItem('escapeLogTheme3',k)}catch(e){}
+  if(persist)safeStorageSet('escapeLogTheme3',k,true)
   const pair=isCustom?ct[k]:[BASE_THEMES[k][1],BASE_THEMES[k][2]];
   if(isCustom)applyCustomCssVars(pair[0],pair[1]);
   document.getElementById('themeColor').content=pair[0];
@@ -2092,12 +2621,44 @@ function resetCustomThemeColor(){
 (function(){
   renderThemeSwatches();
   let k='paper';
-  try{k=localStorage.getItem('escapeLogTheme3')||'paper'}catch(e){}
-  setTheme(k);
+  k=safeStorageGet('escapeLogTheme3','paper')||'paper'
+  setTheme(k,false);
   const re=()=>{if(document.getElementById('dashboard').classList.contains('active'))renderDashboard()};
   window.addEventListener('resize',(()=>{let t;return()=>{clearTimeout(t);t=setTimeout(re,150)}})());
   if(document.fonts){document.fonts.ready.then(re)}
 })();
+const UI_STYLES=[
+  {id:'standard',name:'スタンダード',desc:'クリーンで読みやすい現行の標準デザイン'},
+  {id:'pixel',name:'8bitピクセル',desc:'ドット書体と角ばった枠のレトロゲーム風'},
+  {id:'brutal',name:'ブルータリズム',desc:'太い実線とソリッドな影のハード＆ポップUI'},
+  {id:'cyber',name:'ダーク・サイバー',desc:'発光ラインが映える近未来の情報端末風'},
+  {id:'glass',name:'ボタニカル・グラス',desc:'大きな角丸とすりガラス質感の穏やかなUI'},
+  {id:'studio',name:'アートブック',desc:'極細1px罫線と洗練書体の現代作品集風'}
+];
+function renderStyleOptions(){
+  const cur=document.documentElement.dataset.style||'standard';
+  const grid=document.getElementById('stylePickerGrid');
+  if(grid){
+    grid.innerHTML=UI_STYLES.map(s=>`<button type="button" class="style-card ${s.id===cur?'on':''}" aria-pressed="${s.id===cur}" onclick="setUiStyle('${s.id}')"><div class="style-card-top"><span>${s.name}</span><span class="style-card-badge">選択中</span></div><div class="style-card-desc">${s.desc}</div></button>`).join('');
+  }
+  const lbl=document.getElementById('currentStyleLabel');
+  const found=UI_STYLES.find(s=>s.id===cur);
+  if(lbl&&found)lbl.textContent=found.name;
+}
+function setUiStyle(id,persist=true){
+  if(!UI_STYLES.some(s=>s.id===id))id='standard';
+  document.documentElement.dataset.style=id;
+  if(persist)safeStorageSet('escapeLogStyle',id,true);
+  renderStyleOptions();
+}
+function openStyleModal(){
+  renderStyleOptions();
+  document.getElementById('styleModal').classList.add('show');
+}
+function closeStyleModal(){
+  document.getElementById('styleModal').classList.remove('show');
+}
+setUiStyle(safeStorageGet('escapeLogStyle','standard')||'standard',false);
 </script>
 <script type="text/plain" data-boot>document.addEventListener('keydown',e=>{if(e.key!=='Tab')return;const ms=[...document.querySelectorAll('.modalback.show')];if(!ms.length)return;const z=x=>Number(getComputedStyle(x).zIndex)||0,m=ms.sort((a,b)=>z(a)-z(b))[ms.length-1],f=[...m.querySelectorAll('a[href],button:not([disabled]),input:not([type=hidden]):not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])')].filter(x=>x.getClientRects().length>0);if(!f.length){e.preventDefault();return}const a=f[0],b=f[f.length-1];if(e.shiftKey&&(document.activeElement===a||!m.contains(document.activeElement))){e.preventDefault();b.focus()}else if(!e.shiftKey&&(document.activeElement===b||!m.contains(document.activeElement))){e.preventDefault();a.focus()}});
 try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist()}catch(e){}</script>
@@ -2108,7 +2669,7 @@ document.querySelectorAll('.star[data-star]').forEach(b=>b.setAttribute('aria-la
 ['toast','undoBar'].forEach(id=>{const e=document.getElementById(id);if(e){e.setAttribute('role','status');e.setAttribute('aria-live','polite')}});
 const modals=[...document.querySelectorAll('.modalback:not(.dlg)')];
 modals.forEach(m=>{const box=m.querySelector('.modal'),h=m.querySelector('h2');if(!box)return;box.setAttribute('role','dialog');box.setAttribute('aria-modal','true');if(h){h.id=h.id||m.id+'Title';box.setAttribute('aria-labelledby',h.id)}});
-const closers={recordDetailModal:'closeRecordDetail',wishDetailModal:'closeWishDetail',wishModal:'closeWishModal',filterModal:'closeFilter',timeSheet:'closeTimePicker',ymSheet:'closeYmPicker'};
+const closers={recordDetailModal:'closeRecordDetail',wishDetailModal:'closeWishDetail',wishModal:'closeWishModal',filterModal:'closeFilter',styleModal:'closeStyleModal',timeSheet:'closeTimePicker',ymSheet:'closeYmPicker'};
 let lastFocus=null;
 const obs=new MutationObserver(ms=>{ms.forEach(r=>{const m=r.target,open=m.classList.contains('show');if(open&&!m._open){m._open=true;lastFocus=document.activeElement;setTimeout(()=>{const f=m.querySelector('.iconbtn,button');f&&f.focus&&f.focus({preventScroll:true})},60)}else if(!open&&m._open){m._open=false;if(lastFocus&&lastFocus.isConnected&&lastFocus.focus)lastFocus.focus({preventScroll:true})}})});
 modals.forEach(m=>obs.observe(m,{attributes:true,attributeFilter:['class']}));
@@ -2120,17 +2681,72 @@ document.addEventListener('keydown',e=>{
 })();
 </script>
 <script>
-(function(){var KEY='escapeLogPrototypeV1',DBN='escape-log',STORE='kv',dbh=null;
-function openDB(){return new Promise(function(res,rej){if(!window.indexedDB){rej(new Error('no idb'));return}var r=indexedDB.open(DBN,1);r.onupgradeneeded=function(){r.result.createObjectStore(STORE)};r.onsuccess=function(){res(r.result)};r.onerror=function(){rej(r.error)};r.onblocked=function(){rej(new Error('blocked'))}})}
-window.idbGet=function(k){return new Promise(function(res,rej){var q=dbh.transaction(STORE,'readonly').objectStore(STORE).get(k);q.onsuccess=function(){res(q.result)};q.onerror=function(){rej(q.error)}})};
-window.idbPut=function(k,v){return new Promise(function(res,rej){var tx=dbh.transaction(STORE,'readwrite');tx.objectStore(STORE).put(v,k);tx.oncomplete=function(){res()};tx.onerror=function(){rej(tx.error)};tx.onabort=function(){rej(tx.error)}})};
-function run(){var list=document.querySelectorAll('script[data-boot]');for(var i=0;i<list.length;i++){var n=document.createElement('script');n.text=list[i].textContent;document.body.appendChild(n)}}
-function ls(){try{var raw=localStorage.getItem(KEY);return raw?JSON.parse(raw):null}catch(e){return null}}
-openDB().then(function(h){dbh=h;return window.idbGet('db')}).then(function(v){
-if(v){window.__BOOT_DB=v;window.__IDB=true;try{localStorage.removeItem(KEY)}catch(e){}return}
-var old=ls();
-if(old){return window.idbPut('db',old).then(function(){window.__BOOT_DB=old;window.__IDB=true;try{localStorage.removeItem(KEY)}catch(e){}})}
-window.__BOOT_DB=null;window.__IDB=true}).catch(function(){window.__IDB=false;window.__BOOT_DB=ls()}).then(run,run);
+(function(){
+var KEY='escapeLogPrototypeV1',DBN='escape-log',STORE='kv',dbh=null,started=false;
+function validDB(v){
+  if(!v||typeof v!=='object'||Array.isArray(v))return false;
+  return ['records','wishes','companions','organizers','venues'].every(function(k){return v[k]===undefined||Array.isArray(v[k])});
+}
+function openDB(){return new Promise(function(res,rej){
+  if(!window.indexedDB){rej(new Error('IndexedDBを利用できません'));return}
+  var r=indexedDB.open(DBN,1);
+  r.onupgradeneeded=function(){r.result.createObjectStore(STORE)};
+  r.onsuccess=function(){res(r.result)};
+  r.onerror=function(){rej(r.error||new Error('IndexedDBを開けません'))};
+  r.onblocked=function(){rej(new Error('IndexedDBが別のタブで使用中です'))};
+})}
+window.idbGet=function(k){return new Promise(function(res,rej){
+  try{var q=dbh.transaction(STORE,'readonly').objectStore(STORE).get(k);q.onsuccess=function(){res(q.result)};q.onerror=function(){rej(q.error||new Error('保存データを読み込めません'))}}
+  catch(e){rej(e)}
+})};
+window.idbPut=function(k,v){return new Promise(function(res,rej){
+  try{var tx=dbh.transaction(STORE,'readwrite');tx.objectStore(STORE).put(v,k);tx.oncomplete=function(){res()};tx.onerror=function(){rej(tx.error||new Error('保存に失敗しました'))};tx.onabort=function(){rej(tx.error||new Error('保存が中断されました'))}}
+  catch(e){rej(e)}
+})};
+function run(){if(started)return;started=true;var list=document.querySelectorAll('script[data-boot]');for(var i=0;i<list.length;i++){var n=document.createElement('script');n.text=list[i].textContent;document.body.appendChild(n)}}
+function readLegacy(){
+  try{
+    var raw=localStorage.getItem(KEY);
+    if(raw===null)return {ok:true,found:false,value:null};
+    var value=JSON.parse(raw);
+    if(!validDB(value))return {ok:false,error:new Error('ブラウザ内の旧保存データの形式が正しくありません')};
+    return {ok:true,found:true,value:value};
+  }catch(e){return {ok:false,error:e}}
+}
+function useFallback(cause){
+  var legacy=readLegacy();
+  if(legacy.ok&&legacy.found){
+    window.__BOOT_DB=legacy.value;window.__IDB=false;
+    window.__BOOT_WARNING='IndexedDBから読み込めなかったため、ブラウザ内の旧保存データを使用しています。データを確認し、早めにバックアップしてください。';
+  }else{
+    window.__BOOT_DB=null;window.__IDB=false;
+    window.__BOOT_ERROR=legacy.error?'保存データを確認できませんでした（'+legacy.error.message+'）。':'保存データの読み込み先に接続できず、旧保存データも見つかりません。';
+  }
+  run();
+}
+openDB().then(function(h){
+  dbh=h;
+  return window.idbGet('db');
+}).then(function(v){
+  if(v!==undefined&&v!==null){
+    if(!validDB(v))throw new Error('IndexedDB内の保存データの形式が正しくありません');
+    window.__BOOT_DB=v;window.__IDB=true;
+    try{localStorage.removeItem(KEY)}catch(e){}
+    run();return;
+  }
+  var legacy=readLegacy();
+  if(!legacy.ok)throw legacy.error;
+  if(!legacy.found){window.__BOOT_DB=null;window.__IDB=true;run();return}
+  return window.idbPut('db',legacy.value).then(function(){
+    window.__BOOT_DB=legacy.value;window.__IDB=true;
+    try{localStorage.removeItem(KEY)}catch(e){}
+    run();
+  }).catch(function(){
+    window.__BOOT_DB=legacy.value;window.__IDB=false;
+    window.__BOOT_WARNING='旧保存データをIndexedDBへ移行できなかったため、ブラウザ内の保存データを使用しています。早めにバックアップしてください。';
+    run();
+  });
+}).catch(function(err){useFallback(err)});
 })();
 </script>
 <script type="text/plain" data-boot>(function(){
@@ -2139,7 +2755,7 @@ function linkLabels(){document.querySelectorAll('.formfield').forEach(f=>{const 
 function syncA11y(){document.querySelectorAll('.star').forEach(b=>{b.setAttribute('aria-label','満足度 '+b.dataset.star);b.setAttribute('aria-pressed',b.classList.contains('on'))});document.querySelectorAll('.switch button,.wish-filter button').forEach(b=>b.setAttribute('aria-pressed',b.classList.contains('active')));document.querySelectorAll('.companion-chip').forEach(b=>b.setAttribute('aria-pressed',b.classList.contains('selected')));document.querySelectorAll('.navbtn').forEach(b=>{if(b.classList.contains('active'))b.setAttribute('aria-current','page');else b.removeAttribute('aria-current')})}
 let q=false;const sched=()=>{if(q)return;q=true;requestAnimationFrame(()=>{q=false;syncA11y();linkLabels()})};
 new MutationObserver(sched).observe(document.body,{subtree:true,attributes:true,attributeFilter:['class'],childList:true});sched();
-const closers={recordDetailModal:()=>closeRecordDetail(),wishDetailModal:()=>closeWishDetail(),wishModal:()=>closeWishModal(),filterModal:()=>closeFilter(),timeSheet:()=>closeTimePicker(),ymSheet:()=>closeYmPicker()},order=['ymSheet','timeSheet','filterModal','wishModal','wishDetailModal','recordDetailModal'];
+const closers={recordDetailModal:()=>closeRecordDetail(),wishDetailModal:()=>closeWishDetail(),wishModal:()=>closeWishModal(),filterModal:()=>closeFilter(),styleModal:()=>closeStyleModal(),timeSheet:()=>closeTimePicker(),ymSheet:()=>closeYmPicker()},order=['ymSheet','timeSheet','styleModal','filterModal','wishModal','wishDetailModal','recordDetailModal'];
 let opener=null,wasOpen=false;
 function modalState(){const shown=[...document.querySelectorAll('.modalback.show')],lb=document.getElementById('lightbox'),open=shown.length>0||!!(lb&&!lb.hidden),bg=['.shell','.topbar','.bottomnav'].map(x=>document.querySelector(x)).filter(Boolean);
 if(open&&!wasOpen){opener=document.activeElement;const top=shown[shown.length-1]||lb,f=top&&top.querySelector('button,[href],input:not([type=hidden]),select,textarea');setTimeout(()=>{if(f&&f.focus&&document.contains(f))f.focus({preventScroll:true})},60)}
